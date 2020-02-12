@@ -44,7 +44,11 @@ $("#ResetButton").click(function() {
 function getUrlVars()
 {
     var vars = [], hash;
-    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    var arguments = window.location.href.slice(window.location.href.indexOf('?') + 1)
+    if (arguments.indexOf('#')!=-1) {
+        arguments = arguments.slice(0, arguments.indexOf('#'));
+    }
+    var hashes = arguments.split('&');
 
     for(var i = 0; i < hashes.length; i++)
         {
