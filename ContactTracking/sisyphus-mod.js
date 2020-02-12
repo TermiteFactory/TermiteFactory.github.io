@@ -121,6 +121,7 @@
 				setInitialOptions: function ( options ) {
 					var defaults = {
 						excludeFields: [],
+						occludeFields: [],
 						customKeySuffix: "",
 						locationBased: false,
 						timeout: 0,
@@ -179,6 +180,9 @@
 
 					if ( this.options.autoRelease ) {
 						self.bindReleaseData();
+					} else {
+						// This is mutually exclusive
+						self.bindSaveDataOnSubmit();
 					}
 
 					if ( ! params.started[ this.getInstanceIdentifier() ] ) {
@@ -218,6 +222,62 @@
 				},
 
 				/**
+				 * Bind saving data on Submit
+				 *
+				 * @return void
+				 */
+				bindSaveDataOnSubmit: function() {
+					var self = this;
+
+					self.targets.each( function() {
+						var target = $( this );
+						var formIdAndName = getElementIdentifier( target );
+						$( this ).bind( "submit", function() {
+							self.saveOccludedData( formIdAndName, self.findFieldsToProtect( target ) );
+						} );
+					} );
+				},
+
+				/**
+				 * Bind release form fields data from local storage on submit/resett form
+				 *
+				 * @param String targetFormIdAndName	a form identifier consists of its id and name glued
+				 * @param Object fieldsToProtect		jQuery object contains form fields to protect
+				 *
+				 * @return void
+				 */
+				saveOccludedData: function( targetFormIdAndName, fieldsToProtect ) {
+					var self = this;
+
+					// Released form, are not started anymore. Fix for ajax loaded forms.
+					params.started[ self.getInstanceIdentifier() ] = false;
+
+					fieldsToProtect.each( function() {
+						// Check that this is an occluded field, if not, 
+						if ( $.inArray( this, self.options.occludeFields ) === -1 ) {
+							// Returning non-false is the same as a continue statement in a for loop; it will skip immediately to the next iteration.
+							return true;
+						}
+						var field = $( this );
+						var prefix = (self.options.locationBased ? self.href : "") + targetFormIdAndName + getElementIdentifier( field ) + self.options.customKeySuffix;
+						
+						// Occluded fields are possible for only text and text area
+						if ( field.is( ":text" ) || field.is( "textarea" ) ) {
+							var occluded = ''
+							for (var i = 0; i < field.val().length; i++) {
+								if (i < field.val().length / 2) {
+									occluded += '*';
+								} 
+								else {
+									occluded += field.val().charAt(i);
+								}
+							}
+							self.saveToBrowserStorage( prefix, occluded );
+						}
+					} );
+				},
+
+				/**
 				 * Bind saving data
 				 *
 				 * @return void
@@ -232,13 +292,19 @@
 					self.targets.each( function() {
 						var targetFormIdAndName = getElementIdentifier( $( this ) );
 						self.findFieldsToProtect( $( this ) ).each( function() {
-							if ( $.inArray( this, self.options.excludeFields ) !== -1 ) {
+							if ( $.inArray( this, self.options.excludeFields ) !== -1) {
 								// Returning non-false is the same as a continue statement in a for loop; it will skip immediately to the next iteration.
 								return true;
 							}
 							var field = $( this );
 							var prefix = (self.options.locationBased ? self.href : "") + targetFormIdAndName + getElementIdentifier( field ) + self.options.customKeySuffix;
+							
 							if ( field.is( ":text" ) || field.is( "textarea" ) ) {
+								// Do not store text if it is occluded 
+								if ($.inArray( this, self.options.occludeFields ) !== -1) {
+									return true;
+								}
+
 								if ( ! self.options.timeout ) {
 									self.bindSaveDataImmediately( field, prefix );
 								}
@@ -263,6 +329,7 @@
 
 						self.findFieldsToProtect( $( this) ).each( function() {
 							var field = $( this );
+							// We do not exclude occluded fields here, as check boxes shall not be occluded
 							if ( $.inArray( this, self.options.excludeFields ) !== -1 || ( field.attr( "name" ) === undefined && field.attr( "id" ) === undefined ) ) {
 								// Returning non-false is the same as a continue statement in a for loop; it will skip immediately to the next iteration.
 								return true;
@@ -293,6 +360,10 @@
 									self.browserStorage.remove( prefix );
 								}
 							} else {
+								// For text and non checkbox fields, occlusion should not store these fields 
+								if ( $.inArray( this, self.options.occludeFields ) !== -1) {
+									return true;
+								}
 								if ( self.isCKEditorExists() ) {
 									var editor = CKEDITOR.instances[ field.attr("name") ] || CKEDITOR.instances[ field.attr("id") ];
 									if ( editor ) {
@@ -324,7 +395,8 @@
 						var targetFormIdAndName = getElementIdentifier( $( this ) );
 
 						self.findFieldsToProtect( target ).each( function() {
-							if ( $.inArray( this, self.options.excludeFields ) !== -1 ) {
+							// Occluded fields should be restored as well
+							if ( $.inArray( this, self.options.excludeFields ) !== -1) {
 								// Returning non-false is the same as a continue statement in a for loop; it will skip immediately to the next iteration.
 								return true;
 							}
@@ -507,6 +579,7 @@
 					params.started[ self.getInstanceIdentifier() ] = false;
 
 					fieldsToProtect.each( function() {
+						// Occluded fields are released as well. However, they are saved on submit only, so if auto-release it will not be saved
 						if ( $.inArray( this, self.options.excludeFields ) !== -1 ) {
 							// Returning non-false is the same as a continue statement in a for loop; it will skip immediately to the next iteration.
 							return true;

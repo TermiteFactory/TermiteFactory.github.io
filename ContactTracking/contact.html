@@ -3,15 +3,37 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="sisyphus.js"></script>
+<script type="text/javascript" src="sisyphus-mod.js"></script>
 <script>
 $( function() {
 $( "#contact_form" ).sisyphus( {
     timeout: 0,
     autoRelease: false,
     occludeFields: $( "#Phone" ),
-    excludeFields: $( "#Location" ),
+    excludeFields: $( "#Location, #Fever, #Travel, #TravelDetails, #Contact" ),
     }); //Autosave form2 only,
+} );
+$( function() {
+$("#Travel").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#TravelDetailsGrp').show();
+    $('#TravelDetails').attr('required', '');
+    $('#TravelDetails').attr('data-error', 'This field is required.');
+  } else {
+    $('#TravelDetailsGrp').hide();
+    $('#TravelDetails').removeAttr('required');
+    $('#TravelDetails').removeAttr('data-error');
+  }
+  });
+$("#Travel").trigger("change");
+$("#Fever").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#FeverWarn').show();
+  } else {
+    $('#FeverWarn').hide();
+  }
+  });
+$("#Fever").trigger("change");
 } );
 </script>
 <script>
@@ -50,13 +72,44 @@ window.onload = function() {
     <form id="contact_form" action="https://docs.google.com/forms/d/e/1FAIpQLSdPj8IR3Qo5l8X18mh-tcyvDYTHr7iC4xTRaGxjI2IWZY_7xA/formResponse">
         <div class="form-group">
             <label for="Name">Name</label>
-            <input type="text" class="form-control" id="Name" aria-describedby="nameHelp" name="entry.558351992" placeholder="Enter Your Name">
+            <input type="text" class="form-control" id="Name" aria-describedby="nameHelp" name="entry.558351992" placeholder="Enter Your Name" required>
             <small id="nameHelp" class="form-text text-muted">Name will be AutoFilled Subsequently</small>
         </div>
         <div class="form-group">
             <label for="Phone">Contact Number</label>
-            <input type="text" class="form-control" id="Phone" aria-describedby="phoneHelp" name="entry.647234706" placeholder="Enter Your Number">
-            <small id="phoneHelp" class="form-text text-muted">Phone number will be AutoFilled Subsequently - First 4 digits will be asterisk for privacy</small>
+            <input type="text" class="form-control" id="Phone" aria-describedby="phoneHelp" name="entry.647234706" placeholder="Enter Your Number" required>
+            <small id="phoneHelp" class="form-text text-muted">Phone number will be AutoFilled Subsequently - Half the digits will replaced with asterisk for privacy</small>
+        </div>
+        <div class="form-group">
+            <label for="Fever">Do you have Fever, Flu or Cough?</label>
+            <select class="custom-select" id="Fever" name="entry.1422623274" required>
+                <option selected value="">Choose...</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            <div class="alert alert-danger" id="FeverWarn">
+                <strong>Mandatory</strong> Please wear a mask at all times!
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Travel">Have you travelled out of the country within the last 2 weeks?</label>
+            <select class="custom-select" id="Travel" name="entry.356071507" required>
+                <option selected value="">Choose...</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <div class="form-group" id="TravelDetailsGrp">
+            <label for="TravelDetails">Where have you Travelled To?</label>
+            <input type="text" class="form-control" id="TravelDetails" aria-describedby="locaHelp" name="entry.747808840">
+        </div>
+        <div class="form-group">
+            <label for="Contact">Have you had contact with persons diagnosed with or suspected of flu/ fever/cough?</label>
+            <select class="custom-select" id="Contact" name="entry.424551879" required>
+                <option selected value="">Choose...</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="Location">Check-In Location</label>
