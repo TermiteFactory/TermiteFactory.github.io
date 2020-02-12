@@ -407,6 +407,10 @@
 								self.restoreFieldsData( field, resque );
 								restored = true;
 							}
+							if ( $.inArray( this, self.options.occludeFields ) !== -1) {
+								// Set the field as readonly
+								field.attr( "readonly", ""); 
+							}
 						} );
 					} );
 

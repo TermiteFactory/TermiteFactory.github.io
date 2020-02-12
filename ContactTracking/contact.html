@@ -34,6 +34,10 @@ $("#Fever").change(function() {
   }
   });
 $("#Fever").trigger("change");
+$("#ResetButton").click(function() {
+    $('#Phone').val('');
+    $('#Phone').removeAttr('readonly');
+  });
 } );
 </script>
 <script>
@@ -77,7 +81,12 @@ window.onload = function() {
         </div>
         <div class="form-group">
             <label for="Phone">Contact Number</label>
-            <input type="text" class="form-control" id="Phone" aria-describedby="phoneHelp" name="entry.647234706" placeholder="Enter Your Number" required>
+            <div class="input-group">
+                <input type="text" class="form-control" id="Phone" aria-describedby="phoneHelp" name="entry.647234706" placeholder="Enter Your Number" required>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="ResetButton">Reset</button>
+                </span>
+            </div>
             <small id="phoneHelp" class="form-text text-muted">Phone number will be AutoFilled Subsequently - Half the digits will replaced with asterisk for privacy</small>
         </div>
         <div class="form-group">
@@ -118,6 +127,7 @@ window.onload = function() {
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <br>
 </div>
 
 
