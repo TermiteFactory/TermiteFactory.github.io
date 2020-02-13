@@ -34,6 +34,14 @@ $("#Fever").change(function() {
   }
   });
 $("#Fever").trigger("change");
+$("#Contact").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#ContactWarn').show();
+  } else {
+    $('#ContactWarn').hide();
+  }
+  });
+$("#Contact").trigger("change");
 $("#ClearPhone").click(function() {
     $('#Phone').val('');
     $('#Phone').removeAttr('readonly');
@@ -133,6 +141,11 @@ window.onload = function() {
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
+            <div class="alert alert-danger" id="ContactWarn">
+                <strong>Mandatory</strong> Please wear a mask at all times! 
+                <br>
+                Please approach the welcome team for a mask if you need one
+            </div>
         </div>
         <div class="form-group">
             <label for="Location">Check-In Location</label>
