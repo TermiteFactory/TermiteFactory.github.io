@@ -34,9 +34,12 @@ $("#Fever").change(function() {
   }
   });
 $("#Fever").trigger("change");
-$("#ResetButton").click(function() {
+$("#ClearPhone").click(function() {
     $('#Phone').val('');
     $('#Phone').removeAttr('readonly');
+  });
+$("#ClearName").click(function() {
+    $('#Name').val('');
   });
 } );
 </script>
@@ -72,15 +75,20 @@ window.onload = function() {
 <body>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="h1">Charis Contact Tracing</h1>
-    <p class="lead">Enter your details below to submit them to the Charis Contract Tracing Registry</p>
+    <h1 class="h1">Charis MC Travel & Health Declaration Form</h1>
+    <p class="lead">Enter your details below to submit them to the Charis Contact Tracing Registry</p>
 </div>
 
 <div class="container">
     <form id="contact_form" action="https://docs.google.com/forms/d/e/1FAIpQLSdPj8IR3Qo5l8X18mh-tcyvDYTHr7iC4xTRaGxjI2IWZY_7xA/formResponse">
         <div class="form-group">
             <label for="Name">Name</label>
-            <input type="text" class="form-control" id="Name" aria-describedby="nameHelp" name="entry.558351992" placeholder="Enter Your Name" required>
+            <div class="input-group">
+                <input type="text" class="form-control" id="Name" aria-describedby="nameHelp" name="entry.558351992" placeholder="Enter Your Name" required>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="ClearName">Clear</button>
+                </span>
+            </div>
             <small id="nameHelp" class="form-text text-muted">Name will be AutoFilled Subsequently</small>
         </div>
         <div class="form-group">
@@ -88,20 +96,22 @@ window.onload = function() {
             <div class="input-group">
                 <input type="text" class="form-control" id="Phone" aria-describedby="phoneHelp" name="entry.647234706" placeholder="Enter Your Number" required>
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" id="ResetButton">Reset</button>
+                    <button class="btn btn-primary" type="button" id="ClearPhone">Clear</button>
                 </span>
             </div>
             <small id="phoneHelp" class="form-text text-muted">Phone number will be AutoFilled Subsequently - Half the digits will replaced with asterisk for privacy</small>
         </div>
         <div class="form-group">
-            <label for="Fever">Do you have Fever, Flu or Cough?</label>
+            <label for="Fever">Do you currently have Fever, Flu or Cough?</label>
             <select class="custom-select" id="Fever" name="entry.1422623274" required>
                 <option selected value="">Choose Option for Fever</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
             <div class="alert alert-danger" id="FeverWarn">
-                <strong>Mandatory</strong> Please wear a mask at all times!
+                <strong>Mandatory</strong> Please wear a mask at all times! 
+                <br>
+                Please approach the welcome team for a mask if you need one
             </div>
         </div>
         <div class="form-group">
@@ -117,7 +127,7 @@ window.onload = function() {
             <input type="text" class="form-control" id="TravelDetails" aria-describedby="locaHelp" name="entry.747808840">
         </div>
         <div class="form-group">
-            <label for="Contact">Have you had contact with persons diagnosed with or suspected of flu/ fever/cough?</label>
+            <label for="Contact">Have you had contact with persons diagnosed with or suspected of COVID-19 or showing flu-like symptoms?</label>
             <select class="custom-select" id="Contact" name="entry.424551879" required>
                 <option selected value="">Choose Option for Flu Contact</option>
                 <option value="Yes">Yes</option>
@@ -131,15 +141,16 @@ window.onload = function() {
         </div>
         <div class="form-check">
             <input type="checkbox" class="form-check-input" id="Pdpa" required>
-            <label class="form-check-label" for="Pdpa">I agree to to the <a href="#Clause">PDPA Clause</a></label>
+            <label class="form-check-label" for="Pdpa">I agree to the PDPA Clause</label>
         </div>
+        <br>
+        <p class="text-muted" id="Clause">
+            By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current Wuhan Coronavirus situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.
+        </p>
         <br>
         <button type="submit" class="btn btn-primary btn-lg">Submit</button>
     </form>
     <br>
-    <p class="text-muted" id="Clause">
-    By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current Wuhan Coronavirus situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.
-    </p>
 </div>
 
 
