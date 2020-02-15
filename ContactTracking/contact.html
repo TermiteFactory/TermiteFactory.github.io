@@ -5,60 +5,159 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript" src="sisyphus-mod.min.js"></script>
 <script>
+var deny1 = 0;
+var deny2 = 0;
+var deny3 = 0;
+var deny4 = 0;
+var deny5 = 0;
+var deny6 = 0;
 $( function() {
 $( "#contact_form" ).sisyphus( {
     timeout: 0,
     autoRelease: false,
     occludeFields: $( "#Phone" ),
-    excludeFields: $( "#Location, #Fever, #Travel, #TravelDetails, #Contact, #LOA, #inlineRadio1, #inlineRadio2" ),
+    excludeFields: $( "#q1_yes,#q1_no,#q2_yes,#q2_no,#q3_yes,#q3_no,#q4_yes,#q4_no,#q5_yes,#q5_no,#q6_yes,#q6_no,#q7_yes,#q7_no,#q8_yes,#q8_no,#q9_yes,#q9_no" ),
     }); //Autosave form2 only,
 } );
 $( function() {
-$("#Travel").change(function() {
-  if ($(this).val() == "Yes_Others") {
-    $('#TravelDetailsGrp').show();
-    $('#TravelDetails').attr('required', '');
-    $('#TravelDetails').attr('data-error', 'This field is required.');
-  } else {
-    $('#TravelDetailsGrp').hide();
-    $('#TravelDetails').removeAttr('required');
-    $('#TravelDetails').removeAttr('data-error');
-  }
-  if ($(this).val() == "Yes_China") {
-    $('#TravelDeny').show();
+
+$("#q1_yes").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#Deny1').removeAttr('hidden');
     $('#SubmitButton').attr('disabled', '');
-  } else {
-    $('#TravelDeny').hide();
-    $('#SubmitButton').removeAttr('disabled');
-  }
+    deny1 = 1;
+  } 
   });
-$("#Travel").trigger("change");
-$("#Fever").change(function() {
-  if ($(this).val() == "Yes") {
-    $('#FeverWarn').show();
-  } else {
-    $('#FeverWarn').hide();
-  }
+$("#q1_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Deny1').attr('hidden', '');
+    deny1 = 0;
+    if (deny1 + deny2 + deny3 + deny4 + deny5 + deny6 === 0) {
+        $('#SubmitButton').removeAttr('disabled');
+    }
+  } 
   });
-$("#Fever").trigger("change");
-$("#LOA").change(function() {
+
+$("#q2_yes").change(function() {
   if ($(this).val() == "Yes") {
-    $('#LOADeny').show();
+    $('#Deny2').removeAttr('hidden');
     $('#SubmitButton').attr('disabled', '');
-  } else {
-    $('#LOADeny').hide();
-    $('#SubmitButton').removeAttr('disabled');
-  }
+    deny2 = 1;
+  } 
   });
-$("#LOA").trigger("change");
-$("#Contact").change(function() {
+$("#q2_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Deny2').attr('hidden', '');
+    deny2 = 0;
+    if (deny1 + deny2 + deny3 + deny4 + deny5 + deny6 === 0) {
+        $('#SubmitButton').removeAttr('disabled');
+    }
+  } 
+  });
+
+$("#q3_yes").change(function() {
   if ($(this).val() == "Yes") {
-    $('#ContactWarn').show();
-  } else {
-    $('#ContactWarn').hide();
-  }
+    $('#Deny3').removeAttr('hidden');
+    $('#SubmitButton').attr('disabled', '');
+    deny3 = 1;
+  } 
   });
-$("#Contact").trigger("change");
+$("#q3_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Deny3').attr('hidden', '');
+    deny3 = 0;
+    if (deny1 + deny2 + deny3 + deny4 + deny5 + deny6 === 0) {
+        $('#SubmitButton').removeAttr('disabled');
+    }
+  } 
+  });
+
+$("#q4_yes").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#Deny4').removeAttr('hidden');
+    $('#SubmitButton').attr('disabled', '');
+    deny4 = 1;
+  } 
+  });
+$("#q4_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Deny4').attr('hidden', '');
+    deny4 = 0;
+    if (deny1 + deny2 + deny3 + deny4 + deny5 + deny6 === 0) {
+        $('#SubmitButton').removeAttr('disabled');
+    }
+  } 
+  });
+
+$("#q5_yes").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#Deny5').removeAttr('hidden');
+    $('#SubmitButton').attr('disabled', '');
+    deny5 = 1;
+  } 
+  });
+$("#q5_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Deny5').attr('hidden', '');
+    deny5 = 0;
+    if (deny1 + deny2 + deny3 + deny4 + deny5 + deny6 === 0) {
+        $('#SubmitButton').removeAttr('disabled');
+    }
+  } 
+  });
+
+$("#q6_yes").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#Deny6').removeAttr('hidden');
+    $('#SubmitButton').attr('disabled', '');
+    deny6 = 1;
+  } 
+  });
+$("#q6_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Deny6').attr('hidden', '');
+    deny6 = 0;
+    if (deny1 + deny2 + deny3 + deny4 + deny5 + deny6 === 0) {
+        $('#SubmitButton').removeAttr('disabled');
+    }
+  } 
+  });
+
+
+$("#q7_yes").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#Mask7').removeAttr('hidden');
+  } 
+  });
+$("#q7_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Mask7').attr('hidden', '');
+  } 
+  });
+
+  $("#q8_yes").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#Mask8').removeAttr('hidden');
+  } 
+  });
+$("#q8_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Mask8').attr('hidden', '');
+  } 
+  });
+
+  $("#q9_yes").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#Mask9').removeAttr('hidden');
+  } 
+  });
+$("#q9_no").change(function() {
+  if ($(this).val() == "No") {
+    $('#Mask9').attr('hidden', '');
+  } 
+  });
+
+
 $("#ClearPhone").click(function() {
     $('#Phone').val('');
     $('#Phone').removeAttr('readonly');
@@ -126,62 +225,162 @@ window.onload = function() {
             </div>
             <small id="phoneHelp" class="form-text text-muted">Phone number will be AutoFilled Subsequently - Half the digits will replaced with asterisk for privacy</small>
         </div>
+        <hr />
+        <h1 class="h5">Please answer the following questions</h5>
+
         <div class="form-group">
-            <label >Are you unwell, that is, do you have a fever, flu, cough, sore throat, diarrhoea?</label>
+            <label >Q1: Are you unwell, that is, do you have a fever, flu, cough, sore throat, diarrhoea?</label>
+            <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="entry.1422623274" id="inlineRadio1" value="Yes" required>
-                <label class="form-check-label" for="inlineRadio1">Yes</label>
+                <input class="form-check-input" type="radio" name="entry.1422623274" id="q1_yes" value="Yes" required>
+                <label class="form-check-label" for="q1_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="entry.1422623274" id="inlineRadio2" value="No" required>
-                <label class="form-check-label" for="inlineRadio2">No</label>
+                <input class="form-check-input" type="radio" name="entry.1422623274" id="q1_no" value="No" required>
+                <label class="form-check-label" for="q1_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Deny1" hidden>
+                <strong>Approach Usher</strong> 
+                Please proceed to speak to an usher. You will not be able to continue to declaration.
             </div>
         </div>
-        <div class="alert alert-danger" id="FeverWarn">
-            <strong>Mandatory</strong> Please wear a mask at all times! 
+        <hr />
+        <div class="form-group">
+            <label >Q2: Have you returned from Mainland China, Macau or Hong Kong in the past 14 days?</label>
             <br>
-            Please approach the welcome team for a mask if you need one
-        </div>
-        <div class="form-group">
-            <label for="Travel">Have you travelled out of the country within the last 2 weeks?</label>
-            <select class="custom-select" id="Travel" name="entry.356071507" required>
-                <option selected value="">Choose Option for Travel</option>
-                <option value="Yes_China">Yes - China, HK and Macau</option>
-                <option value="Yes_Others">Yes - Others</option>
-                <option value="No">No</option>
-            </select>
-            <div class="alert alert-warning" id="TravelDeny">
-                <strong>Approach Usher</strong> Please proceed to speak to an usher. You will not be able to continue to declaration.
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.356071507" id="q2_yes" value="Yes" required>
+                <label class="form-check-label" for="q2_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.356071507" id="q2_no" value="No" required>
+                <label class="form-check-label" for="q2_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Deny2" hidden>
+                <strong>Approach Usher</strong> 
+                Please proceed to speak to an usher. You will not be able to continue to declaration.
             </div>
         </div>
-        <div class="form-group" id="TravelDetailsGrp">
-            <label for="TravelDetails">Where have you Travelled To?</label>
-            <input type="text" class="form-control" id="TravelDetails" aria-describedby="locaHelp" name="entry.747808840">
-        </div>
+        <hr />
         <div class="form-group">
-            <label for="LOA">Have you been placed under Leave of Absence due to close contact to confirmed cases of COVID-19?</label>
-            <select class="custom-select" id="LOA" name="entry.405190724" required>
-                <option selected value="">Choose Option for under LOA</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            <div class="alert alert-warning" id="LOADeny">
-                <strong>Approach Usher</strong> Please proceed to speak to an usher. You will not be able to continue to declaration.
+            <label >Q3: Have you been in close contact with any suspected or confirmed cases of COVID-19?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.747808840" id="q3_yes" value="Yes" required>
+                <label class="form-check-label" for="q3_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.747808840" id="q3_no" value="No" required>
+                <label class="form-check-label" for="q3_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Deny3" hidden>
+                <strong>Approach Usher</strong> 
+                Please proceed to speak to an usher. You will not be able to continue to declaration.
             </div>
         </div>
+        <hr />
         <div class="form-group">
-            <label for="Contact">Have you had close contact with suspected cases of COVID-19?</label>
-            <select class="custom-select" id="Contact" name="entry.424551879" required>
-                <option selected value="">Choose Option for Contact w COVID</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            <div class="alert alert-danger" id="ContactWarn">
-                <strong>Mandatory</strong> Please wear a mask at all times! 
-                <br>
-                Please approach the welcome team for a mask if you need one
+            <label >Q4: Have you live in the same house as someone on Home Quarantine Orders (HQO)?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.405190724" id="q4_yes" value="Yes" required>
+                <label class="form-check-label" for="q4_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.405190724" id="q4_no" value="No" required>
+                <label class="form-check-label" for="q4_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Deny4" hidden>
+                <strong>Approach Usher</strong> 
+                Please proceed to speak to an usher. You will not be able to continue to declaration.
             </div>
         </div>
+        <hr />
+        <div class="form-group">
+            <label >Q5: Are you been placed on Leave of Absence?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.424551879" id="q5_yes" value="Yes" required>
+                <label class="form-check-label" for="q5_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.424551879" id="q5_no" value="No" required>
+                <label class="form-check-label" for="q5_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Deny5" hidden>
+                <strong>Approach Usher</strong> 
+                Please proceed to speak to an usher. You will not be able to continue to declaration.
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label >Q6: Have you been in any of the known local clusters in the past 14 days?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.696261713" id="q6_yes" value="Yes" required>
+                <label class="form-check-label" for="q6_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.696261713" id="q6_no" value="No" required>
+                <label class="form-check-label" for="q6_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Deny6" hidden>
+                <strong>Approach Usher</strong> 
+                Please proceed to speak to an usher. You will not be able to continue to declaration.
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label >Q7: Have you come in close contact with any traveler who has recently returned from Mainland China, Macau or Hong Kong?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.598188459" id="q7_yes" value="Yes" required>
+                <label class="form-check-label" for="q7_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.598188459" id="q7_no" value="No" required>
+                <label class="form-check-label" for="q7_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Mask7" hidden>
+                <strong>Mandatory</strong>
+                Please wear a mask at all times! Please approach the welcome team for a mask if you need one
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label >Q8: Have you come in close contact with anyone who is on Leave of Absence?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.524775648" id="q8_yes" value="Yes" required>
+                <label class="form-check-label" for="q8_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.524775648" id="q8_no" value="No" required>
+                <label class="form-check-label" for="q8_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Mask8" hidden>
+                <strong>Mandatory</strong>
+                Please wear a mask at all times! Please approach the welcome team for a mask if you need one
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label >Q9: Are you recovering from sickness?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.261195548" id="q9_yes" value="Yes" required>
+                <label class="form-check-label" for="q9_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.261195548" id="q9_no" value="No" required>
+                <label class="form-check-label" for="q9_no">No</label>
+            </div>
+            <div class="alert alert-danger" id="Mask9" hidden>
+                <strong>Mandatory</strong>
+                Please wear a mask at all times! Please approach the welcome team for a mask if you need one
+            </div>
+        </div>
+        <hr />
         <div class="form-group">
             <label for="Location">Check-In Location</label>
             <input type="text" class="form-control" id="Location" aria-describedby="locaHelp" name="entry.470707163" readonly>
@@ -189,12 +388,8 @@ window.onload = function() {
         </div>
         <div class="form-check">
             <input type="checkbox" class="form-check-input" id="Pdpa" required>
-            <label class="form-check-label" for="Pdpa">I agree to the PDPA Clause</label>
+            <label class="form-check-label text-muted" for="Pdpa">By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current Wuhan Coronavirus situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.</label>
         </div>
-        <br>
-        <p class="text-muted" id="Clause">
-            By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current Wuhan Coronavirus situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.
-        </p>
         <br>
         <button type="submit" id="SubmitButton" class="btn btn-primary btn-lg">Submit</button>
     </form>
