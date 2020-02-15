@@ -10,7 +10,7 @@ $( "#contact_form" ).sisyphus( {
     timeout: 0,
     autoRelease: false,
     occludeFields: $( "#Phone" ),
-    excludeFields: $( "#Location, #Fever, #Travel, #TravelDetails, #Contact" ),
+    excludeFields: $( "#Location, #Fever, #Travel, #TravelDetails, #Contact, #LOA" ),
     }); //Autosave form2 only,
 } );
 $( function() {
@@ -143,7 +143,7 @@ window.onload = function() {
             <label for="Travel">Have you travelled out of the country within the last 2 weeks?</label>
             <select class="custom-select" id="Travel" name="entry.356071507" required>
                 <option selected value="">Choose Option for Travel</option>
-                <option value="Yes_China">Yes - China, HK and Macau</option>
+                <option value="Yes_China">Yes - Mainland China, HK and Macau</option>
                 <option value="Yes_Others">Yes - Others</option>
                 <option value="No">No</option>
             </select>
@@ -169,7 +169,7 @@ window.onload = function() {
         <div class="form-group">
             <label for="Contact">Have you had close contact with suspected cases of COVID-19?</label>
             <select class="custom-select" id="Contact" name="entry.424551879" required>
-                <option selected value="">Choose Option for Suspected COVID Contact</option>
+                <option selected value="">Choose Option for Contact w Suspect COVID</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
