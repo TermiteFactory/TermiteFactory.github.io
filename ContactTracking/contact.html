@@ -126,21 +126,15 @@ window.onload = function() {
             </div>
             <small id="phoneHelp" class="form-text text-muted">Phone number will be AutoFilled Subsequently - Half the digits will replaced with asterisk for privacy</small>
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-8">
-                    <label >Are you unwell, that is, do you have a fever, flu, cough, sore throat, diarrhoea?</label>
+        <div class="form-group">
+            <label >Are you unwell, that is, do you have a fever, flu, cough, sore throat, diarrhoea?</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.1422623274" id="inlineRadio1" value="Yes" required>
+                <label class="form-check-label" for="inlineRadio1">Yes</label>
                 </div>
-                <div class="col-4">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="entry.1422623274" id="inlineRadio1" value="Yes" required>
-                        <label class="form-check-label" for="inlineRadio1">Yes</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="entry.1422623274" id="inlineRadio2" value="No" required>
-                        <label class="form-check-label" for="inlineRadio2">No</label>
-                      </div>
-                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="entry.1422623274" id="inlineRadio2" value="No" required>
+                <label class="form-check-label" for="inlineRadio2">No</label>
             </div>
         </div>
         <div class="alert alert-danger" id="FeverWarn">
