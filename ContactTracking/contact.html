@@ -15,7 +15,7 @@ $( "#contact_form" ).sisyphus( {
 } );
 $( function() {
 $("#Travel").change(function() {
-  if ($(this).val() == "Yes") {
+  if ($(this).val() == "Yes_Others") {
     $('#TravelDetailsGrp').show();
     $('#TravelDetails').attr('required', '');
     $('#TravelDetails').attr('data-error', 'This field is required.');
@@ -23,6 +23,13 @@ $("#Travel").change(function() {
     $('#TravelDetailsGrp').hide();
     $('#TravelDetails').removeAttr('required');
     $('#TravelDetails').removeAttr('data-error');
+  }
+  if ($(this).val() == "Yes_China") {
+    $('#TravelDeny').show();
+    $('#SubmitButton').attr('disabled', '');
+  } else {
+    $('#TravelDeny').hide();
+    $('#SubmitButton').removeAttr('disabled');
   }
   });
 $("#Travel").trigger("change");
@@ -34,6 +41,16 @@ $("#Fever").change(function() {
   }
   });
 $("#Fever").trigger("change");
+$("#LOA").change(function() {
+  if ($(this).val() == "Yes") {
+    $('#LOADeny').show();
+    $('#SubmitButton').attr('disabled', '');
+  } else {
+    $('#LOADeny').hide();
+    $('#SubmitButton').removeAttr('disabled');
+  }
+  });
+$("#LOA").trigger("change");
 $("#Contact").change(function() {
   if ($(this).val() == "Yes") {
     $('#ContactWarn').show();
@@ -126,18 +143,33 @@ window.onload = function() {
             <label for="Travel">Have you travelled out of the country within the last 2 weeks?</label>
             <select class="custom-select" id="Travel" name="entry.356071507" required>
                 <option selected value="">Choose Option for Travel</option>
-                <option value="Yes">Yes</option>
                 <option value="No">No</option>
+                <option value="Yes_China">Yes - China, HK and Macau</option>
+                <option value="Yes_Others">Yes - Others</option>
             </select>
+            <div class="alert alert-warning" id="TravelDeny">
+                <strong>Approach Usher</strong> Please proceed to speak to an usher. You will not be able to continue to declaration.
+            </div>
         </div>
         <div class="form-group" id="TravelDetailsGrp">
             <label for="TravelDetails">Where have you Travelled To?</label>
             <input type="text" class="form-control" id="TravelDetails" aria-describedby="locaHelp" name="entry.747808840">
         </div>
         <div class="form-group">
-            <label for="Contact">Have you had contact with persons diagnosed with or suspected of COVID-19 or showing flu-like symptoms?</label>
+            <label for="LOA">Have you been placed under Leave of Absence due to close contact to confirmed cases of COVID-19?</label>
+            <select class="custom-select" id="LOA" name="entry.405190724" required>
+                <option selected value="">Choose Option for LOA</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            <div class="alert alert-warning" id="LOADeny">
+                <strong>Approach Usher</strong> Please proceed to speak to an usher. You will not be able to continue to declaration.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Contact">Have you had close contact with suspected cases of COVID-19?</label>
             <select class="custom-select" id="Contact" name="entry.424551879" required>
-                <option selected value="">Choose Option for Flu Contact</option>
+                <option selected value="">Choose Option for Suspected COVID Contact</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
@@ -161,7 +193,7 @@ window.onload = function() {
             By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current Wuhan Coronavirus situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.
         </p>
         <br>
-        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        <button type="submit" id="SubmitButton" class="btn btn-primary btn-lg">Submit</button>
     </form>
     <br>
 </div>
