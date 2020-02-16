@@ -157,6 +157,17 @@ $("#q9_no").change(function() {
   } 
   });
 
+if (!!window.performance && window.performance.navigation.type === 2) {
+    // value 2 means "The page was accessed by navigating into the history"
+    console.log('Reloading');
+    window.location.reload(); // reload whole page
+}
+
+window.onpageshow = function (event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+};
 
 $("#ClearPhone").click(function() {
     $('#Phone').val('');
@@ -388,7 +399,7 @@ window.onload = function() {
         </div>
         <div class="form-check">
             <input type="checkbox" class="form-check-input" id="Pdpa" required>
-            <label class="form-check-label text-muted" for="Pdpa">By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current Wuhan Coronavirus situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.</label>
+            <label class="form-check-label text-muted" for="Pdpa">By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current COVID-19 situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.</label>
         </div>
         <br>
         <button type="submit" id="SubmitButton" class="btn btn-primary btn-lg">Submit</button>
