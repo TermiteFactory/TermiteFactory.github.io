@@ -19,7 +19,7 @@ $( "#contact_form" ).sisyphus( {
     timeout: 0,
     autoRelease: false,
     occludeFields: $( "#Phone" ),
-    excludeFields: $( "#q1_yes,#q1_no,#q2_yes,#q2_no,#q3_yes,#q3_no,#q4_yes,#q4_no,#q5_yes,#q5_no,#q6_yes,#q6_no,#q7_yes,#q7_no,#q8_yes,#q8_no,#q9_yes,#q9_no" ),
+    excludeFields: $( "#q1_yes,#q1_no,#q2_yes,#q2_no,#q3_yes,#q3_no,#q4_yes,#q4_no,#q5_yes,#q5_no,#q6_yes,#q6_no,#q7_yes,#q7_no,#q8_yes,#q8_no,#q9_yes,#q9_no,#LastUpdate" ),
     }); //Autosave form2 only,
 } );
 $( function() {
@@ -215,7 +215,7 @@ window.onload = function() {
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="h1">Charis MC Travel & Health Declaration Form</h1>
     <p class="lead">Enter your details below to submit them to the Charis Contact Tracing Registry</p>
-    <p class="bg-warning">Questionaire Updated: 23rd Feb 2020</p>
+    <p style="background-color: #ffc0cb" >Questionaire Updated: 29th Feb 2020</p>
 </div>
 
 <div class="container">
@@ -270,7 +270,7 @@ window.onload = function() {
         </div>
         <hr />
         <div class="form-group">
-            <label >Q2: Have you returned from Mainland China, Macau or Hong Kong in the past 14 days?</label>
+            <label >Q2: Have you returned from Mainland China, Macau, Hong Kong, Daegu City or Cheongdo County (South Korea) in the past 14 days?</label>
             <br>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="entry.356071507" id="q2_yes" value="Yes" required>
@@ -370,7 +370,7 @@ window.onload = function() {
         </div>
         <hr />
         <div class="form-group">
-            <label >Q7: Have you come in close contact with any traveler who has recently returned from Mainland China, Macau or Hong Kong?</label>
+            <label >Q7: Have you come in close contact with any traveler who has recently returned from Mainland China, Macau, Hong Kong, Daegu City or Cheongdo County (South Korea)?</label>
             <br>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="entry.598188459" id="q7_yes" value="Yes" required>
@@ -441,6 +441,7 @@ window.onload = function() {
             </div>
             <label class="form-check-label text-muted" for="Pdpa">By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current COVID-19 situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.</label>
         </div>
+        <input type="hidden" id="LastUpdate" name="entry.1586416284" value="29th Feb 2020">
         <br>
         <button type="submit" id="SubmitButton" class="btn btn-primary btn-lg">Submit</button>
     </form>
