@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script>
+        function getUrlVars()
+        {
+            var vars = [], hash;
+            var decoded = decodeURI(window.location.href);
+            var arguments = decoded.slice(decoded.indexOf('?') + 1)
+            if (arguments.indexOf('#')!=-1) {
+                arguments = arguments.slice(0, arguments.indexOf('#'));
+            }
+            var hashes = arguments.split('&');
+        
+            for(var i = 0; i < hashes.length; i++)
+                {
+                 hash = hashes[i].split('=');
+                 vars[hash[0]] = hash[1];
+                 }
+        
+             return vars;
+        }
+        window.onload = function() {
+            var get_vars = getUrlVars();
+            for (var key in get_vars) {
+                var element = document.getElementById(key)
+                element.innerText = element.innerText + ' ' + get_vars[key];
+            }
+        }
+    </script>
+
+    <title>Success!</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  </head>
+  <body class="text-center">
+
+  <div class="container">
+    <img src="tick.png">
+    <h1 class="display-3 text-bold">Sent!</h1>
+    <h5 class="text-gray-soft text-regular">Please show this page to an Usher</h5>
+    <br>
+    <h5 id="submitted-on" class="text-gray-soft text-regular">Submitted on</h5>
+  </div>
+  
+
+  <footer class="mastfoot mt-auto">
+    <div class="inner">
+      <p>For more information please visit <a href="https://www.charismc.org.sg/">Charis Methodist Church</a></p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
