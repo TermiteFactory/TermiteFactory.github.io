@@ -224,7 +224,7 @@ window.onload = function() {
         <div class="form-group">
             <label for="Name">Name</label>
             <div class="input-group">
-                <input type="text" class="form-control" id="Name" aria-describedby="nameHelp" name="Name" placeholder="Enter Your Name" required>
+                <input type="text" class="form-control" id="Name" aria-describedby="nameHelp" name="entry.558351992" placeholder="Enter Your Name" required>
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="button" id="ClearName">Clear</button>
                 </span>
@@ -237,7 +237,7 @@ window.onload = function() {
         <div class="form-group">
             <label for="Phone">Contact Number</label>
             <div class="input-group">
-                <input type="text" class="form-control" id="Phone" aria-describedby="phoneHelp" name="Phone" placeholder="Enter Your Number" required>
+                <input type="text" class="form-control" id="Phone" aria-describedby="phoneHelp" name="entry.647234706" placeholder="Enter Your Number" required>
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="button" id="ClearPhone">Clear</button>
                 </span>
@@ -444,6 +444,9 @@ window.onload = function() {
         </div>
         <input type="hidden" id="LastUpdate" name="FormLastUpdated" value="29th Feb 2020">
         <br>
+        <div id="sub-progress" class="alert alert-success" role="alert" hidden>
+            Submission in Progress, Please Wait!
+        </div>
         <button type="submit" id="SubmitButton" class="btn btn-primary btn-lg">Submit</button>
     </form>
     <br>
@@ -488,9 +491,9 @@ window.onload = function() {
             }
             var monthNames = [
                 "Jan", "Feb", "Mar",
-                "April", "May", "June", "July",
-                "August", "September", "October",
-                "November", "December"
+                "Apr", "May", "Jun", "Jul",
+                "Aug", "Sep", "Oct",
+                "Nov", "Dec"
             ];
             var date = new Date();
             var day = ordinal_suffix_of(date.getDate());
@@ -499,7 +502,11 @@ window.onload = function() {
             window.location.replace(encodeURI("success.html?submitted-on=" + day + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + date.getMinutes()));
         },
         beforeSubmit: function(arr, form, options) {
-           return form[0].checkValidity();
+           var valid = form[0].checkValidity();
+           if (valid) {
+                $('#sub-progress').removeAttr('hidden');
+           }
+           return valid;
         },
         clearForm: true
     };
