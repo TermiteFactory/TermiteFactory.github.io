@@ -15,6 +15,9 @@ var deny3 = 0;
 var deny4 = 0;
 var deny5 = 0;
 var deny6 = 0;
+var mask7 = 0;
+var mask8 = 0;
+var mask9 = 0;
 $( function() {
 $( "#contact_form" ).sisyphus( {
     timeout: 0,
@@ -131,33 +134,39 @@ $("#q6_no").change(function() {
 $("#q7_yes").change(function() {
   if ($(this).val() == "Yes") {
     $('#Mask7').removeAttr('hidden');
+    mask7 = 1;
   } 
   });
 $("#q7_no").change(function() {
   if ($(this).val() == "No") {
     $('#Mask7').attr('hidden', '');
+    mask7 = 0;
   } 
   });
 
   $("#q8_yes").change(function() {
   if ($(this).val() == "Yes") {
     $('#Mask8').removeAttr('hidden');
+    mask8 = 1;
   } 
   });
 $("#q8_no").change(function() {
   if ($(this).val() == "No") {
     $('#Mask8').attr('hidden', '');
+    mask8 = 0;
   } 
   });
 
   $("#q9_yes").change(function() {
   if ($(this).val() == "Yes") {
     $('#Mask9').removeAttr('hidden');
+    mask9 = 1;
   } 
   });
 $("#q9_no").change(function() {
   if ($(this).val() == "No") {
     $('#Mask9').attr('hidden', '');
+    mask9 = 0;
   } 
   });
 
@@ -499,7 +508,11 @@ window.onload = function() {
             var day = ordinal_suffix_of(date.getDate());
             var monthIndex = date.getMonth();
 
-            window.location.replace(encodeURI("success.html?submitted-on=" + day + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + date.getMinutes()));
+            var img = 'tick';
+            if (mask7 + mask8 + mask9 > 0) {
+                img = 'mask'
+            }
+            window.location.replace(encodeURI("success.html?submitted-on=" + day + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + date.getMinutes()+ '&display=' + img));
         },
         beforeSubmit: function(arr, form, options) {
            var valid = form[0].checkValidity();

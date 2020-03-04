@@ -25,10 +25,10 @@
         }
         window.onload = function() {
             var get_vars = getUrlVars();
-            for (var key in get_vars) {
-                var element = document.getElementById(key)
-                element.innerText = element.innerText + ' ' + get_vars[key];
-            }
+            var element = document.getElementById('submitted-on');
+            element.innerText = element.innerText + ' ' + get_vars['submitted-on'];
+            var element2 = document.getElementById('display-image');
+            element2.src = get_vars['display'] + '.png';
         }
     </script>
 
@@ -40,17 +40,17 @@
   <body class="text-center">
 
   <div class="container">
-    <img class="img-fluid" alt="Responsive image" src="tick.png">
+    <img class="img-fluid" alt="Responsive image" id="display-image" src="tick.png">
     <h1 class="display-3 text-bold">Sent!</h1>
-    <h5 class="text-gray-soft text-regular">Please show this page to an Usher</h5>
-    <br>
     <h5 id="submitted-on" class="text-gray-soft text-regular">Submitted on</h5>
+    <br>
+    <h5 class="text-gray-soft text-regular">Please show this page to an Usher</h5>
   </div>
   
 
   <footer class="mastfoot mt-auto">
     <div class="inner">
-      <p>For more information please visit <a href="https://www.charismc.org.sg/">Charis Methodist Church</a></p>
+      <p>Please click here for this week's <a href="https://www.charismc.org.sg/bulletin">Bulletin</a></p>
     </div>
   </footer>
 </div>
