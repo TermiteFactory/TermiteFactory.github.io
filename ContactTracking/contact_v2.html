@@ -170,6 +170,12 @@ $("#q9_no").change(function() {
   } 
   });
 
+$(function(){
+    $('input[type="text"]').change(function(){
+        this.value = $.trim(this.value);
+    });
+});
+
 if (!!window.performance && window.performance.navigation.type === 2) {
     // value 2 means "The page was accessed by navigating into the history"
     console.log('Reloading');
@@ -518,6 +524,7 @@ window.onload = function() {
           alert("Submission Error! Please look for help!");
         },
         beforeSubmit: function(arr, form, options) {
+           
            var valid = form[0].checkValidity();
            if (valid) {
                 $('#sub-progress').removeAttr('hidden');
