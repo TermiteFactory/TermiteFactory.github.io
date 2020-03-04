@@ -514,6 +514,9 @@ window.onload = function() {
             }
             window.location.replace(encodeURI("success.html?submitted-on=" + day + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + date.getMinutes()+ '&display=' + img));
         },
+        error: function() {
+          alert("Submission Error! Please look for help!");
+        },
         beforeSubmit: function(arr, form, options) {
            var valid = form[0].checkValidity();
            if (valid) {
