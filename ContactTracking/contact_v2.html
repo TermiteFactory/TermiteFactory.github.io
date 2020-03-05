@@ -518,7 +518,7 @@ window.onload = function() {
             if (mask7 + mask8 + mask9 > 0) {
                 img = 'mask'
             }
-            window.location.replace(encodeURI("success.html?submitted-on=" + day + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + date.getMinutes()+ '&display=' + img));
+            window.location.replace(encodeURI("success.html?submitted-on=" + day + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes()+ '&display=' + img));
         },
         error: function() {
           alert("Submission Error! Please look for help!");
