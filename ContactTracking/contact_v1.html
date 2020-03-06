@@ -6,7 +6,6 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 <script type="text/javascript" src="sisyphus-mod.min.js"></script>
 <script>
 var deny1 = 0;
@@ -15,9 +14,6 @@ var deny3 = 0;
 var deny4 = 0;
 var deny5 = 0;
 var deny6 = 0;
-var mask7 = 0;
-var mask8 = 0;
-var mask9 = 0;
 $( function() {
 $( "#contact_form" ).sisyphus( {
     timeout: 0,
@@ -134,47 +130,35 @@ $("#q6_no").change(function() {
 $("#q7_yes").change(function() {
   if ($(this).val() == "Yes") {
     $('#Mask7').removeAttr('hidden');
-    mask7 = 1;
   } 
   });
 $("#q7_no").change(function() {
   if ($(this).val() == "No") {
     $('#Mask7').attr('hidden', '');
-    mask7 = 0;
   } 
   });
 
   $("#q8_yes").change(function() {
   if ($(this).val() == "Yes") {
     $('#Mask8').removeAttr('hidden');
-    mask8 = 1;
   } 
   });
 $("#q8_no").change(function() {
   if ($(this).val() == "No") {
     $('#Mask8').attr('hidden', '');
-    mask8 = 0;
   } 
   });
 
   $("#q9_yes").change(function() {
   if ($(this).val() == "Yes") {
     $('#Mask9').removeAttr('hidden');
-    mask9 = 1;
   } 
   });
 $("#q9_no").change(function() {
   if ($(this).val() == "No") {
     $('#Mask9').attr('hidden', '');
-    mask9 = 0;
   } 
   });
-
-$(function(){
-    $('input[type="text"]').change(function(){
-        this.value = $.trim(this.value);
-    });
-});
 
 if (!!window.performance && window.performance.navigation.type === 2) {
     // value 2 means "The page was accessed by navigating into the history"
@@ -235,7 +219,7 @@ window.onload = function() {
 </div>
 
 <div class="container">
-    <form id="contact_form" action="https://script.google.com/macros/s/AKfycbx5s2D2UsbfEL7vWGE11hNpRoSNL7Jyv3T3gq25gmDCM0Ff3NS-/exec" class="needs-validation" method="post" novalidate>
+    <form id="contact_form" action="https://docs.google.com/forms/d/e/1FAIpQLSdPj8IR3Qo5l8X18mh-tcyvDYTHr7iC4xTRaGxjI2IWZY_7xA/formResponse" class="needs-validation" novalidate>
         <div class="form-group">
             <label for="Name">Name</label>
             <div class="input-group">
@@ -269,11 +253,11 @@ window.onload = function() {
             <label >Q1: Are you unwell, that is, do you have a fever, flu, cough, sore throat, diarrhoea?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q1:unwell" id="q1_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.1422623274" id="q1_yes" value="Yes" required>
                 <label class="form-check-label" for="q1_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q1:unwell" id="q1_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.1422623274" id="q1_no" value="No" required>
                 <label class="form-check-label" for="q1_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -289,11 +273,11 @@ window.onload = function() {
             <label >Q2: Have you returned from Mainland China, Macau, Hong Kong, Republic of Korea, Northern Italy or Iran in the past 14 days?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q2:return from china" id="q2_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.356071507" id="q2_yes" value="Yes" required>
                 <label class="form-check-label" for="q2_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q2:return from china" id="q2_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.356071507" id="q2_no" value="No" required>
                 <label class="form-check-label" for="q2_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -309,11 +293,11 @@ window.onload = function() {
             <label >Q3: Have you been in close contact with any suspected or confirmed cases of COVID-19?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q3:contact with covid" id="q3_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.747808840" id="q3_yes" value="Yes" required>
                 <label class="form-check-label" for="q3_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q3:contact with covid" id="q3_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.747808840" id="q3_no" value="No" required>
                 <label class="form-check-label" for="q3_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -329,11 +313,11 @@ window.onload = function() {
             <label >Q4: Have you live in the same house as someone on Home Quarantine Orders (HQO) or Stay at Home Notice (SHN)?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q4:same house HQO" id="q4_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.405190724" id="q4_yes" value="Yes" required>
                 <label class="form-check-label" for="q4_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q4:same house HQO" id="q4_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.405190724" id="q4_no" value="No" required>
                 <label class="form-check-label" for="q4_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -349,11 +333,11 @@ window.onload = function() {
             <label >Q5: Are you been placed on Leave of Absence?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q5:leave of absence" id="q5_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.424551879" id="q5_yes" value="Yes" required>
                 <label class="form-check-label" for="q5_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q5:leave of absence" id="q5_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.424551879" id="q5_no" value="No" required>
                 <label class="form-check-label" for="q5_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -369,11 +353,11 @@ window.onload = function() {
             <label >Q6: Have you been in any of the known local clusters in the past 14 days?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q6:local cluster" id="q6_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.696261713" id="q6_yes" value="Yes" required>
                 <label class="form-check-label" for="q6_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q6:local cluster" id="q6_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.696261713" id="q6_no" value="No" required>
                 <label class="form-check-label" for="q6_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -389,11 +373,11 @@ window.onload = function() {
             <label >Q7: Have you come in close contact with any traveler who has recently returned from Mainland China, Macau, Hong Kong, Republic of Korea, Northern Italy or Iran?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q7:contact china" id="q7_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.598188459" id="q7_yes" value="Yes" required>
                 <label class="form-check-label" for="q7_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q7:contact china" id="q7_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.598188459" id="q7_no" value="No" required>
                 <label class="form-check-label" for="q7_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -409,11 +393,11 @@ window.onload = function() {
             <label >Q8: Have you come in close contact with anyone who is on Leave of Absence?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q8:contact loa" id="q8_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.524775648" id="q8_yes" value="Yes" required>
                 <label class="form-check-label" for="q8_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q8:contact loa" id="q8_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.524775648" id="q8_no" value="No" required>
                 <label class="form-check-label" for="q8_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -429,11 +413,11 @@ window.onload = function() {
             <label >Q9: Are you recovering from sickness?</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q9:recovering" id="q9_yes" value="Yes" required>
+                <input class="form-check-input" type="radio" name="entry.261195548" id="q9_yes" value="Yes" required>
                 <label class="form-check-label" for="q9_yes">Yes</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="q9:recovering" id="q9_no" value="No" required>
+                <input class="form-check-input" type="radio" name="entry.261195548" id="q9_no" value="No" required>
                 <label class="form-check-label" for="q9_no">No</label>
                 <div class="invalid-feedback">
                     &nbsp&nbsp&nbsp&nbspPlease Pick an Option.
@@ -447,7 +431,7 @@ window.onload = function() {
         <hr />
         <div class="form-group">
             <label for="Location">Check-In Location</label>
-            <input type="text" class="form-control" id="Location" aria-describedby="locaHelp" name="Location" readonly>
+            <input type="text" class="form-control" id="Location" aria-describedby="locaHelp" name="entry.470707163" readonly>
             <small id="locaHelp" class="form-text text-muted">Location is AutoFilled by QR Code</small>
         </div>
         <div class="form-check">
@@ -457,11 +441,8 @@ window.onload = function() {
             </div>
             <label class="form-check-label text-muted" for="Pdpa">By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current COVID-19 situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.</label>
         </div>
-        <input type="hidden" id="LastUpdate" name="FormLastUpdated" value="6th Mar 2020">
+        <input type="hidden" id="LastUpdate" name="entry.1586416284" value="6th March 2020">
         <br>
-        <div id="sub-progress" class="alert alert-success" role="alert" hidden>
-            Submission in Progress, Please Wait!
-        </div>
         <button type="submit" id="SubmitButton" class="btn btn-primary btn-lg">Submit</button>
     </form>
     <br>
@@ -486,64 +467,6 @@ window.onload = function() {
         });
       }, false);
     })();
-
-    // prepare Options Object
-    var options = {
-        success: function() {
-            $('#SubmitButton').removeAttr('disabled');
-            function ordinal_suffix_of(i) {
-                var j = i % 10,
-                    k = i % 100;
-                if (j == 1 && k != 11) {
-                    return i + "st";
-                }
-                if (j == 2 && k != 12) {
-                    return i + "nd";
-                }
-                if (j == 3 && k != 13) {
-                    return i + "rd";
-                }
-                return i + "th";
-            }
-            var monthNames = [
-                "Jan", "Feb", "Mar",
-                "Apr", "May", "Jun", "Jul",
-                "Aug", "Sep", "Oct",
-                "Nov", "Dec"
-            ];
-            var date = new Date();
-            var day = ordinal_suffix_of(date.getDate());
-            var monthIndex = date.getMonth();
-
-            var img = 'tick';
-            if (mask7 + mask8 + mask9 > 0) {
-                img = 'mask'
-            }
-            window.location.replace(encodeURI("success.html?submitted-on=" + day + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes()+ '&display=' + img));
-        },
-        error: function() {
-          $('#sub-progress').attr('hidden', '');
-          $('#SubmitButton').removeAttr('disabled');
-          alert("Submission Error! Please look for help!");
-        },
-        beforeSubmit: function(arr, form, options) {
-           
-           var valid = form[0].checkValidity();
-           if (valid) {
-                $('#sub-progress').removeAttr('hidden');
-                $('#SubmitButton').attr('disabled', '');
-           }
-           return valid;
-        },
-        clearForm: true
-    };
-
-
-    // wait for the DOM to be loaded
-    $(function() {
-        // bind 'myForm' and provide a simple callback function
-        $('#contact_form').ajaxForm(options);
-    });
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
