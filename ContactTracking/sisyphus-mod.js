@@ -406,7 +406,7 @@
 							if ( resque !== null ) {
 								self.restoreFieldsData( field, resque );
 								restored = true;
-								
+
 								if ($.inArray( this, self.options.occludeFields ) !== -1) {
 									// Set the field as readonly
 									field.attr( "readonly", ""); 
@@ -445,7 +445,7 @@
 						}
 					} else if ( name === undefined || name.indexOf( "[" ) === -1 ) {
 						// If we aren't named by name (e.g. id) or we aren't in a multiple element field
-						field.val( resque );
+						field.val( $.trim(resque) );
 					} else {
 						resque = resque.split( "," );
 						field.val( resque );

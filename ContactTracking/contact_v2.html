@@ -490,6 +490,7 @@ window.onload = function() {
     // prepare Options Object
     var options = {
         success: function() {
+            $('#SubmitButton').removeAttr('disabled');
             function ordinal_suffix_of(i) {
                 var j = i % 10,
                     k = i % 100;
@@ -521,6 +522,7 @@ window.onload = function() {
             window.location.replace(encodeURI("success.html?submitted-on=" + day + ' ' + monthNames[monthIndex] + ' ' + date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes()+ '&display=' + img));
         },
         error: function() {
+          $('#SubmitButton').removeAttr('disabled');
           alert("Submission Error! Please look for help!");
         },
         beforeSubmit: function(arr, form, options) {
@@ -528,6 +530,7 @@ window.onload = function() {
            var valid = form[0].checkValidity();
            if (valid) {
                 $('#sub-progress').removeAttr('hidden');
+                $('#SubmitButton').attr('disabled', '');
            }
            return valid;
         },
