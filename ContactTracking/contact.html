@@ -23,7 +23,7 @@ $( "#contact_form" ).sisyphus( {
     timeout: 0,
     autoRelease: false,
     occludeFields: $( "#Phone" ),
-    excludeFields: $( "#q1_yes,#q1_no,#q2_yes,#q2_no,#q3_yes,#q3_no,#q4_yes,#q4_no,#q5_yes,#q5_no,#q6_yes,#q6_no,#q7_yes,#q7_no,#q8_yes,#q8_no,#q9_yes,#q9_no,#LastUpdate" ),
+    excludeFields: $( "#q1_yes,#q1_no,#q2_yes,#q2_no,#q3_yes,#q3_no,#q4_yes,#q4_no,#q5_yes,#q5_no,#q6_yes,#q6_no,#q7_yes,#q7_no,#q8_yes,#q8_no,#q9_yes,#q9_no,#Location,#LastUpdate" ),
     }); //Autosave form2 only,
 } );
 $( function() {
@@ -217,8 +217,11 @@ function getUrlVars()
 }
 window.onload = function() {
     var get_vars = getUrlVars();
-    for (var key in get_vars) {
-        document.getElementById(key).value = get_vars[key];
+    if ('Location' in get_vars) {
+      document.getElementById('Location').value = get_vars['Location'];
+    } else {
+      $('#locaHelp').attr('hidden', '');
+      $('#Location').removeAttr('readonly');
     }
 }
 </script>
@@ -231,7 +234,7 @@ window.onload = function() {
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="h1">Charis MC Travel & Health Declaration Form</h1>
     <p class="lead">Enter your details below to submit them to the Charis Contact Tracing Registry</p>
-    <p class="text-light" style="background-color: #008000" >Questionaire Updated: 15th March 2020</p>
+    <p class="text-light" style="background-color: #008000" >Questionaire Updated: 21st March 2020</p>
 </div>
 
 <div class="container">
@@ -447,7 +450,7 @@ window.onload = function() {
         <hr />
         <div class="form-group">
             <label for="Location">Check-In Location</label>
-            <input type="text" class="form-control" id="Location" aria-describedby="locaHelp" name="Location" readonly>
+            <input type="text" class="form-control" id="Location" aria-describedby="locaHelp" name="Location" readonly required>
             <small id="locaHelp" class="form-text text-muted">Location is AutoFilled by QR Code</small>
         </div>
         <div class="form-check">
@@ -457,7 +460,7 @@ window.onload = function() {
             </div>
             <label class="form-check-label text-muted" for="Pdpa">By submitting your information here, you agree and consent to Charis Methodist Church to collect, use, disclose and share your personal data, for the purpose of contact tracing should there be a need to, due to the current COVID-19 situation. Charis Methodist Church respects personal data and privacy, and will not share such information with any third parties unless authorized to do so.</label>
         </div>
-        <input type="hidden" id="LastUpdate" name="FormLastUpdated" value="15th Mar 2020">
+        <input type="hidden" id="LastUpdate" name="FormLastUpdated" value="21st Mar 2020">
         <br>
         <div id="sub-progress" class="alert alert-success" role="alert" hidden>
             Submission in Progress, Please Wait!
