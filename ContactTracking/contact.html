@@ -157,18 +157,18 @@ $("#q8_no").change(function() {
   } 
   });
 
-  $("#q9_yes").change(function() {
-  if ($(this).val() == "Yes") {
-    $('#Mask9').removeAttr('hidden');
-    mask9 = 1;
-  } 
-  });
-$("#q9_no").change(function() {
-  if ($(this).val() == "No") {
-    $('#Mask9').attr('hidden', '');
-    mask9 = 0;
-  } 
-  });
+//   $("#q9_yes").change(function() {
+//   if ($(this).val() == "Yes") {
+//     $('#Mask9').removeAttr('hidden');
+//     mask9 = 1;
+//   } 
+//   });
+// $("#q9_no").change(function() {
+//   if ($(this).val() == "No") {
+//     $('#Mask9').attr('hidden', '');
+//     mask9 = 0;
+//   } 
+//   });
 
 $(function(){
     $('input[type="text"]').change(function(){
@@ -234,7 +234,7 @@ window.onload = function() {
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="h1">Charis MC Travel & Health Declaration Form</h1>
     <p class="lead">Enter your details below to submit them to the Charis Contact Tracing Registry</p>
-    <p class="text-light" style="background-color: #008000" >Questionaire Updated: 21st March 2020</p>
+    <p class="text-dark" style="background-color: #FFC0CB" >Questionaire Updated: 21st March 2020</p>
 </div>
 
 <div class="container">
@@ -269,7 +269,7 @@ window.onload = function() {
         <h1 class="h5">Please answer the following questions</h5>
 
         <div class="form-group">
-            <label >Q1: Are you unwell, that is, do you have a fever, flu, cough, sore throat, diarrhoea?</label>
+            <label >Q1: Are you unwell, that is, do you have a fever, flu, cough, sore throat or diarrhoea in the past week?</label>
             <br>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="q1:unwell" id="q1_yes" value="Yes" required>
@@ -283,13 +283,13 @@ window.onload = function() {
                 </div>
             </div>
             <div class="alert alert-danger" id="Deny1" hidden>
-                <strong>Approach Usher</strong> 
-                Please proceed to speak to an usher. You will not be able to continue this declaration.
+                <strong>Speak to your Host/Leader</strong> 
+                You will not be able to continue this declaration. Please advise your Host/Leader that you should be excused from this activity.
             </div>
         </div>
         <hr />
         <div class="form-group">
-            <label >Q2: Have you returned from Mainland China, Macau, Hong Kong, Republic of Korea, Northern Italy or Iran, France, Spain or Germany in the past 14 days?</label>
+            <label >Q2: Have you returned from any country or region outside of Singapore in the past 14 days?</label>
             <br>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="q2:return from china" id="q2_yes" value="Yes" required>
@@ -303,8 +303,8 @@ window.onload = function() {
                 </div>
             </div>
             <div class="alert alert-danger" id="Deny2" hidden>
-                <strong>Approach Usher</strong> 
-                Please proceed to speak to an usher. You will not be able to continue this declaration.
+                <strong>Speak to your Host/Leader</strong> 
+                You will not be able to continue this declaration. Please advise your Host/Leader that you should be excused from this activity.
             </div>
         </div>
         <hr />
@@ -323,8 +323,8 @@ window.onload = function() {
                 </div>
             </div>
             <div class="alert alert-danger" id="Deny3" hidden>
-                <strong>Approach Usher</strong> 
-                Please proceed to speak to an usher. You will not be able to continue this declaration.
+                <strong>Speak to your Host/Leader</strong> 
+                You will not be able to continue this declaration. Please advise your Host/Leader that you should be excused from this activity.
             </div>
         </div>
         <hr />
@@ -343,13 +343,13 @@ window.onload = function() {
                 </div>
             </div>
             <div class="alert alert-danger" id="Deny4" hidden>
-                <strong>Approach Usher</strong> 
-                Please proceed to speak to an usher. You will not be able to continue this declaration.
+                <strong>Speak to your Host/Leader</strong> 
+                You will not be able to continue this declaration. Please advise your Host/Leader that you should be excused from this activity.
             </div>
         </div>
         <hr />
         <div class="form-group">
-            <label >Q5: Are you been placed on Leave of Absence?</label>
+            <label >Q5: Are you currently serving a Stay-Home-Notice, or are on a Leave of Absence from work?</label>
             <br>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="q5:leave of absence" id="q5_yes" value="Yes" required>
@@ -363,8 +363,8 @@ window.onload = function() {
                 </div>
             </div>
             <div class="alert alert-danger" id="Deny5" hidden>
-                <strong>Approach Usher</strong> 
-                Please proceed to speak to an usher. You will not be able to continue this declaration.
+                <strong>Speak to your Host/Leader</strong> 
+                You will not be able to continue this declaration. Please advise your Host/Leader that you should be excused from this activity.
             </div>
         </div>
         <hr />
@@ -383,13 +383,13 @@ window.onload = function() {
                 </div>
             </div>
             <div class="alert alert-danger" id="Deny6" hidden>
-                <strong>Approach Usher</strong> 
-                Please proceed to speak to an usher. You will not be able to continue this declaration.
+                <strong>Speak to your Host/Leader</strong> 
+                You will not be able to continue this declaration. Please advise your Host/Leader that you should be excused from this activity.
             </div>
         </div>
         <hr />
         <div class="form-group">
-            <label >Q7: Have you come in close contact with any traveler who has recently returned from Mainland China, Macau, Hong Kong, Republic of Korea, Northern Italy or Iran, France, Spain or Germany ?</label>
+            <label >Q7: Have you come in close contact with any traveler who has recently returned from any Country or Region outside of Singapore?</label>
             <br>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="q7:contact china" id="q7_yes" value="Yes" required>
@@ -403,13 +403,13 @@ window.onload = function() {
                 </div>
             </div>
             <div class="alert alert-danger" id="Mask7" hidden>
-                <strong>Mandatory</strong>
-                Please wear a mask at all times! Please approach an usher for a mask if you need one
+                <strong>Speak to your Host/Leader</strong>
+                Please inform your host/leader that you have answered "Yes" to this question and exercise social distancing.
             </div>
         </div>
         <hr />
         <div class="form-group">
-            <label >Q8: Have you come in close contact with anyone who is on Leave of Absence?</label>
+            <label >Q8: Have you come in close contact with anyone who is on Leave of Absence or serving a Stay-Home-Notice?</label>
             <br>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="q8:contact loa" id="q8_yes" value="Yes" required>
@@ -423,12 +423,12 @@ window.onload = function() {
                 </div>
             </div>
             <div class="alert alert-danger" id="Mask8" hidden>
-                <strong>Mandatory</strong>
-                Please wear a mask at all times! Please approach an usher for a mask if you need one
+                <strong>Speak to your Host/Leader</strong>
+                Please inform your host/leader that you have answered "Yes" to this question and exercise social distancing.
             </div>
         </div>
         <hr />
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label >Q9: Are you recovering from sickness?</label>
             <br>
             <div class="form-check form-check-inline">
@@ -444,10 +444,10 @@ window.onload = function() {
             </div>
             <div class="alert alert-danger" id="Mask9" hidden>
                 <strong>Mandatory</strong>
-                Please wear a mask at all times! Please approach an usher for a mask if you need one
+                Please speak to your host/leader on this and kindly exercise social distancing.
             </div>
         </div>
-        <hr />
+        <hr /> -->
         <div class="form-group">
             <label for="Location">Check-In Location</label>
             <input type="text" class="form-control" id="Location" aria-describedby="locaHelp" name="Location" readonly required>

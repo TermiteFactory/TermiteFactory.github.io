@@ -29,6 +29,10 @@
             element.innerText = element.innerText + ' ' + get_vars['submitted-on'];
             var element2 = document.getElementById('display-image');
             element2.src = get_vars['display'] + '.png';
+
+            if (get_vars['display'] == 'mask') {
+                document.getElementById('warn-txt').removeAttribute('hidden');
+            }
         }
     </script>
 
@@ -44,14 +48,17 @@
     <h1 class="display-3 text-bold">Sent!</h1>
     <h5 id="submitted-on" class="text-gray-soft text-regular">Submitted on</h5>
     <br>
-    <h5 class="text-gray-soft text-regular">Please show this page to an Usher</h5>
+    <h5  class="text-gray-soft text-regular">Thank you for your submission</h5>
   </div>
   
 
   <footer class="mastfoot mt-auto">
-    <div class="inner">
+    <div id="warn-txt" class="inner" hidden>
+        <p>Remember to Practice Social Distancing and wear a Mask if possible.</p>
+    </div> 
+    <!-- <div class="inner">
       <p>Please click here for this week's <a href="https://www.charismc.org.sg/bulletin">Bulletin</a></p>
-    </div>
+    </div> -->
   </footer>
 </div>
 </body>
