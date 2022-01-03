@@ -47,6 +47,46 @@ export const createUnCheckIn = (id) => {
     };
 };
 
+export const ABSENT = 'ABSENT';
+export const createAbsent = (id) => {
+    return {
+        type: ABSENT,
+        payload: id
+    };
+};
+
+export const UNABSENT = 'UNABSENT';
+export const createUnAbsent = (id) => {
+    return {
+        type: UNABSENT,
+        payload: id
+    };
+};
+
+export const FILTER_TEXT = 'FILTER_TEXT';
+export const createFilterText = (text) => {
+    return {
+        type: FILTER_TEXT,
+        payload: text
+    };
+};
+
+export const FILTER_ONLYUNENTERED = 'FILTER_ONLYUNENTERED';
+export const createFilterOnlyUnentered = () => {
+    return {
+        type: FILTER_ONLYUNENTERED,
+        payload: null
+    };
+};
+
+export const UNFILTER_ONLYUNENTERED = 'UNFILTER_ONLYUNENTERED';
+export const createUnFilterOnlyUnentered = () => {
+    return {
+        type: UNFILTER_ONLYUNENTERED,
+        payload: null
+    };
+};
+
 // Reducers 
 const initialAppState = {
     people: [
@@ -59,6 +99,7 @@ const initialAppState = {
             allocZone: null,
             allocRow: null,
             checkin: false,
+            absent: false,
         }
     ],
     idsSelectForAlloc: [],
@@ -75,61 +116,137 @@ const initialAppState = {
             seats: 8,
         }
     ],
-    zoneRowSelect: null,
+    selectZone: null,
+    selectRow: null,
+    filterText: '',
+    filterOnlyUnentered: false,
 };
 
 export const appState = (state = initialAppState, action) => {
     const { type, payload } = action;
 
     switch (type) {
+        case FILTER_TEXT: {
+            // Add Filter Text
+            return {
+                ...state,
+                filterText: payload
+            };
+        }
+        case FILTER_ONLYUNENTERED: {
+            // Add Filter
+            return {
+                ...state,
+                filterOnlyUnentered: true
+            };
+        }
+        case UNFILTER_ONLYUNENTERED: {
+            // Remove filter 
+            return {
+                ...state,
+                filterOnlyUnentered: false
+            };
+        }
         case SELECT_ID: {
             // Add the id to the idsSelectForAlloc and add to orderSelectForAlloc if it is null
             return {
                 ...state,
-                time: {
-                    ...state.time,
-                    currentTime: payload,
-                },
+                idsSelectForAlloc: state.idsSelectForAlloc.indexOf(payload.id) === -1 ?
+                    state.idsSelectForAlloc.push(payload.id) : state.idsSelectForAlloc,
+                orderSelectForAlloc: payload.orderNum,
             };
         }
         case UNSELECT_ID: {
             // Remove the ids from the idsSelectForAlloc and set the orderSelectForAlloc to null if ids are empty
+            const newIdsSelect = state.idsSelectForAlloc.filter((id) => id !== payload.id);
+
             return {
                 ...state,
-                time: {
-                    ...state.time,
-                    currentTime: payload,
-                },
+                idsSelectForAlloc: newIdsSelect,
+                orderSelectForAlloc: newIdsSelect.length === 0 ? null : state.orderSelectForAlloc,
             };
         }
         case DONE_ALLOC: {
             // Take the zoneRowSelect and update all the selected ids with the allocation
             return {
                 ...state,
-                time: {
-                    ...state.time,
-                    currentTime: payload,
-                },
+                people: state.people.map(person => {
+                    if (state.idsSelectForAlloc.includes(person.uniqueId)) {
+                        return {
+                            ...person,
+                            allocZone: state.selectZone,
+                            allocRow: state.selectRow,
+                        };
+                    } else {
+                        return person;
+                    }
+                }),
+                idsSelectForAlloc: [],
+                orderSelectForAlloc: null,
             };
         }
         case CHECK_IN: {
             // Update the person's checkin status to true
             return {
                 ...state,
-                time: {
-                    ...state.time,
-                    currentTime: payload,
-                },
+                people: state.people.map(person => {
+                    if (payload === person.uniqueId) {
+                        return {
+                            ...person,
+                            checkin: true,
+                        };
+                    } else {
+                        return person;
+                    }
+                }),
             };
         }
         case UNCHECK_IN: {
             // Update the person's checkin status to false
             return {
                 ...state,
-                time: {
-                    ...state.time,
-                    currentTime: payload,
-                },
+                people: state.people.map(person => {
+                    if (payload === person.uniqueId) {
+                        return {
+                            ...person,
+                            checkin: false,
+                        };
+                    } else {
+                        return person;
+                    }
+                }),
+            };
+        }
+        case ABSENT: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                people: state.people.map(person => {
+                    if (payload === person.uniqueId) {
+                        return {
+                            ...person,
+                            absent: true,
+                        };
+                    } else {
+                        return person;
+                    }
+                }),
+            };
+        }
+        case UNABSENT: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                people: state.people.map(person => {
+                    if (payload === person.uniqueId) {
+                        return {
+                            ...person,
+                            absent: false,
+                        };
+                    } else {
+                        return person;
+                    }
+                }),
             };
         }
         default:
@@ -153,3 +270,9 @@ export const store = configureStore({
 export const getPeople = (state) => state.appState.people;
 
 export const getZoneInfo = (state) => state.appState.zoneInfo;
+
+export const getIdsSelectForAlloc = (state) => state.appState.getIdsSelectForAlloc;
+
+export const getFilteredText = (state) => state.appState.filterText;
+
+export const getFilterUnentered = (state) => state.appState.filterOnlyUnentered;

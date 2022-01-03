@@ -1,8 +1,16 @@
 import { Navbar, Container, Button, InputGroup, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { getPeople, getZoneInfo } from './redux';
+import {
+    getPeople,
+    getZoneInfo,
+    createFilterText,
+    createFilterOnlyUnentered,
+    createUnFilterOnlyUnentered,
+    getFilteredText,
+    getFilterUnentered
+} from './redux';
 
-const TopBar = ({ people, zoneInfo }) => {
+const TopBar = ({ people, zoneInfo, filteredText, filterUnenetered, onFilterText, onFilterUnEntered, onUnfilterUnentered }) => {
 
     const allocstats = people.reduce((result, person) => {
         if (person.allocZone === null) {
@@ -27,13 +35,17 @@ const TopBar = ({ people, zoneInfo }) => {
     return <Navbar bg="dark" variant="dark">
         <Container>
             <Navbar.Brand>Seat Helper</Navbar.Brand>
-            <InputGroup>
                 <FormControl
-                    placeholder="Hide Name List"
-                    aria-label="Hide Name List with two button addons"
+                placeholder="Filter Names"
+                value={filteredText}
+                onChange={e => onFilterText(e.target.value)}
                 />
-                <Button variant="outline-secondary">Hide Entered/Absent</Button>
-            </InputGroup>
+            <Button
+                className="text-nowrap ml-3"
+                variant={filterUnenetered ? "primary" : "outline-secondary"}
+                onClick={() => filterUnenetered ? onUnfilterUnentered() : onFilterUnEntered()}>
+                {filterUnenetered ? 'Show Entered/Absent' : 'Hide Entered/Absent'}
+            </Button>
             <Navbar.Text>
                 <div className="text-nowrap bd-highlight ml-3">
                     To Allocate: {allocstats.unalloc}
@@ -49,9 +61,15 @@ const TopBar = ({ people, zoneInfo }) => {
 const mapStateToProps = state => ({
     people: getPeople(state),
     zoneInfo: getZoneInfo(state),
+    filteredText: getFilteredText(state),
+    filterUnenetered: getFilterUnentered(state),
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+    onFilterText: (text) => dispatch(createFilterText(text)),
+    onFilterUnEntered: () => dispatch(createFilterOnlyUnentered()),
+    onUnfilterUnentered: () => dispatch(createUnFilterOnlyUnentered()),
+});
 
 export default connect(
     mapStateToProps,
