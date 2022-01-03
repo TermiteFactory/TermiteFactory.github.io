@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import {
     getPeople,
     getIdsSelectForAlloc,
+    getOrderSelectForAlloc,
     getFilteredText,
     getFilterUnentered,
     createSelectId,
@@ -16,6 +17,7 @@ import { Table, Button } from 'react-bootstrap';
 
 const NameList = ({ people,
     idsSelectForAlloc,
+    orderSelectForAlloc,
     filteredText,
     filterUnentered,
     onAllocated,
@@ -65,7 +67,8 @@ const NameList = ({ people,
             stripe = !stripe;
         }
         const trColor = stripe ? "table-active" : "table-light";
-        const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}>{person.orderNum}</td> : null
+        const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}>{person.orderNum}</td> : null;
+        const allocated = idsSelectForAlloc.indexOf(person.uniqueId) !== -1;
 
         return <tr className={trColor}>
             {orderCell}
@@ -74,9 +77,15 @@ const NameList = ({ people,
             <td>{person.telephone}</td>
             <td>{alloc}</td>
             <td>
-                <Button variant="outline-primary" className='ml-1'>Allocate</Button>
-                <Button variant="outline-secondary" className='ml-1'>Check In</Button>
-                <Button variant="outline-info" className='ml-1'>Absent</Button>
+                <Button variant={allocated ? "primary" : "outline-primary"}
+                    onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
+                    disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent}
+                    className='ml-1'>Allocate</Button>
+                <Button variant="outline-secondary" className='ml-1' disabled={true}>Check In</Button>
+                <Button variant={person.absent ? "info" : "outline-info"}
+                    onClick={() => person.absent ? onUnAbsent(person.uniqueId) : onAbsent(person.uniqueId)}
+                    disabled={allocated}
+                    className='ml-1'>Absent</Button>
             </td>
         </tr>
     });
@@ -101,6 +110,7 @@ const NameList = ({ people,
 const mapStateToProps = state => ({
     people: getPeople(state),
     idsSelectForAlloc: getIdsSelectForAlloc(state),
+    orderSelectForAlloc: getOrderSelectForAlloc(state),
     filteredText: getFilteredText(state),
     filterUnentered: getFilterUnentered(state),
 });

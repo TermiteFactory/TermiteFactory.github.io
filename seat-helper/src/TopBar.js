@@ -10,7 +10,13 @@ import {
     getFilterUnentered
 } from './redux';
 
-const TopBar = ({ people, zoneInfo, filteredText, filterUnenetered, onFilterText, onFilterUnEntered, onUnfilterUnentered }) => {
+const TopBar = ({ people,
+    zoneInfo,
+    filteredText,
+    filterUnenetered,
+    onFilterText,
+    onFilterUnEntered,
+    onUnfilterUnentered }) => {
 
     const allocstats = people.reduce((result, person) => {
         if (person.allocZone === null) {
@@ -32,7 +38,7 @@ const TopBar = ({ people, zoneInfo, filteredText, filterUnenetered, onFilterText
         return `${result}${zone.rows * zone.seats - alloc} (Zone ${zone.id}), `;
     }, '');
 
-    return <Navbar bg="dark" variant="dark">
+    return <Navbar bg="dark" variant="dark" sticky="top">
         <Container>
             <Navbar.Brand>Seat Helper</Navbar.Brand>
                 <FormControl

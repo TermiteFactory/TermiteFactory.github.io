@@ -13,13 +13,10 @@ export const createSelectId = (id, orderNum) => {
 };
 
 export const UNSELECT_ID = 'UNSELECT_ID';
-export const createUnSelectId = (id, orderNum) => {
+export const createUnSelectId = (id) => {
     return {
         type: UNSELECT_ID,
-        payload: {
-            id,
-            orderNum,
-        }
+        payload: id
     };
 };
 
@@ -95,7 +92,7 @@ const initialAppState = {
             orderNum: '2RBD-9R2V-PK3',
             name: 'KAH Kwee Ann',
             tixType: '2/1 - (A+B/Grand Staircase)',
-            telephone: '911111123',
+            telephone: '91111123',
             allocZone: null,
             allocRow: null,
             checkin: false,
@@ -185,13 +182,13 @@ export const appState = (state = initialAppState, action) => {
             return {
                 ...state,
                 idsSelectForAlloc: state.idsSelectForAlloc.indexOf(payload.id) === -1 ?
-                    state.idsSelectForAlloc.push(payload.id) : state.idsSelectForAlloc,
+                    state.idsSelectForAlloc.concat(payload.id) : state.idsSelectForAlloc,
                 orderSelectForAlloc: payload.orderNum,
             };
         }
         case UNSELECT_ID: {
             // Remove the ids from the idsSelectForAlloc and set the orderSelectForAlloc to null if ids are empty
-            const newIdsSelect = state.idsSelectForAlloc.filter((id) => id !== payload.id);
+            const newIdsSelect = state.idsSelectForAlloc.filter((id) => id !== payload);
 
             return {
                 ...state,
@@ -304,7 +301,9 @@ export const getPeople = (state) => state.appState.people;
 
 export const getZoneInfo = (state) => state.appState.zoneInfo;
 
-export const getIdsSelectForAlloc = (state) => state.appState.getIdsSelectForAlloc;
+export const getIdsSelectForAlloc = (state) => state.appState.idsSelectForAlloc;
+
+export const getOrderSelectForAlloc = (state) => state.appState.orderSelectForAlloc;
 
 export const getFilteredText = (state) => state.appState.filterText;
 
