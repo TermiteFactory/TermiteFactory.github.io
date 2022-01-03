@@ -93,9 +93,9 @@ const initialAppState = {
         {
             uniqueId: 5,
             orderNum: '2RBD-9R2V-PK3',
-            name: 'PAK MENG LEE',
+            name: 'PAK MME LSEE',
             tixType: '2/1 - (A+B/Grand Staircase)',
-            telephone: '97514326',
+            telephone: '92222222',
             allocZone: null,
             allocRow: null,
             checkin: false,
