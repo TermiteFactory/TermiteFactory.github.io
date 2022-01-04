@@ -77,11 +77,14 @@ const NameList = ({ people,
             <td>{person.telephone}</td>
             <td>{alloc}</td>
             <td>
-                <Button variant={allocated ? "primary" : "outline-primary"}
+                <Button variant={allocated ? "success" : "outline-success"}
                     onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
-                    disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent}
+                    disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent || person.checkin}
                     className='ml-1'>Allocate</Button>
-                <Button variant="outline-secondary" className='ml-1' disabled={true}>Check In</Button>
+                <Button variant={person.checkin ? "secondary" : "outline-secondary"}
+                    className='ml-1'
+                    onClick={() => person.checkin ? onUnCheckIn(person.uniqueId) : onCheckIn(person.uniqueId)}
+                    disabled={person.allocZone == null}>Check In</Button>
                 <Button variant={person.absent ? "info" : "outline-info"}
                     onClick={() => person.absent ? onUnAbsent(person.uniqueId) : onAbsent(person.uniqueId)}
                     disabled={allocated}

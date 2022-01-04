@@ -157,6 +157,7 @@ const initialAppState = {
             seats: 8,
         }
     ],
+    lastSelectZone: null,
     selectZone: null,
     selectRow: null,
     filterText: '',
@@ -219,8 +220,6 @@ export const appState = (state = initialAppState, action) => {
                             ...person,
                             allocZone: state.selectZone,
                             allocRow: state.selectRow,
-                            selectZone: null,
-                            selectRow: null,
                         };
                     } else {
                         return person;
@@ -228,6 +227,9 @@ export const appState = (state = initialAppState, action) => {
                 }),
                 idsSelectForAlloc: [],
                 orderSelectForAlloc: null,
+                selectZone: null,
+                selectRow: null,
+                lastSelectZone: state.selectZone,
             };
         }
         case CHECK_IN: {
@@ -335,3 +337,5 @@ export const getFilterUnentered = (state) => state.appState.filterOnlyUnentered;
 export const getSelectZone = (state) => state.appState.selectZone;
 
 export const getSelectRow = (state) => state.appState.selectRow;
+
+export const getLastSelectZone = (state) => state.appState.lastSelectZone;

@@ -50,14 +50,14 @@ const TopBar = ({ people,
                 className="text-nowrap ml-3"
                 variant={filterUnenetered ? "primary" : "outline-secondary"}
                 onClick={() => filterUnenetered ? onUnfilterUnentered() : onFilterUnEntered()}>
-                {filterUnenetered ? 'Show Entered/Absent' : 'Hide Entered/Absent'}
+                {filterUnenetered ? 'Show Done' : 'Hide Done'}
             </Button>
             <Navbar.Text>
                 <div className="text-nowrap bd-highlight ml-3">
                     To Allocate: {allocstats.unalloc}
                 </div>
                 <div className="text-nowrap bd-highlight ml-3">
-                    Available Space: {avail}
+                    Space: {avail}
                 </div>
             </Navbar.Text>
         </Container>
