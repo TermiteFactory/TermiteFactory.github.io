@@ -273,6 +273,8 @@ export const appState = (state = initialAppState, action) => {
                         return {
                             ...person,
                             absent: true,
+                            allocZone: null,
+                            allocRow: null,
                         };
                     } else {
                         return person;
