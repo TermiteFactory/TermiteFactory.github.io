@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/seat-helper/build/static/js/main.45f47ed5.js",
+    "main.js": "/seat-helper/build/static/js/main.a8f012e1.js",
     "index.html": "/seat-helper/build/index.html",
-    "main.45f47ed5.js.map": "/seat-helper/build/static/js/main.45f47ed5.js.map"
+    "main.a8f012e1.js.map": "/seat-helper/build/static/js/main.a8f012e1.js.map"
   },
   "entrypoints": [
-    "static/js/main.45f47ed5.js"
+    "static/js/main.a8f012e1.js"
   ]
 }
