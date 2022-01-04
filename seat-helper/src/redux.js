@@ -84,6 +84,17 @@ export const createUnFilterOnlyUnentered = () => {
     };
 };
 
+export const CHOOSE_SEAT = 'CHOOSE_SEAT';
+export const createChooseSeat = (zone, row) => {
+    return {
+        type: CHOOSE_SEAT,
+        payload: {
+            zone,
+            row
+        }
+    };
+};
+
 // Reducers 
 const initialAppState = {
     people: [
@@ -104,8 +115,8 @@ const initialAppState = {
             name: 'JOSEPH TAN',
             tixType: '2/1 - (A+B/Grand Staircase)',
             telephone: '92222222',
-            allocZone: null,
-            allocRow: null,
+            allocZone: 'A',
+            allocRow: 2,
             checkin: false,
             absent: false,
         },
@@ -194,6 +205,8 @@ export const appState = (state = initialAppState, action) => {
                 ...state,
                 idsSelectForAlloc: newIdsSelect,
                 orderSelectForAlloc: newIdsSelect.length === 0 ? null : state.orderSelectForAlloc,
+                selectZone: newIdsSelect.length === 0 ? null : state.selectZone,
+                selectRow: newIdsSelect.length === 0 ? null : state.selectRow,
             };
         }
         case DONE_ALLOC: {
@@ -206,6 +219,8 @@ export const appState = (state = initialAppState, action) => {
                             ...person,
                             allocZone: state.selectZone,
                             allocRow: state.selectRow,
+                            selectZone: null,
+                            selectRow: null,
                         };
                     } else {
                         return person;
@@ -279,6 +294,14 @@ export const appState = (state = initialAppState, action) => {
                 }),
             };
         }
+        case CHOOSE_SEAT: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                selectZone: payload.zone,
+                selectRow: payload.row,
+            };
+        }
         default:
             return state;
     }
@@ -308,3 +331,7 @@ export const getOrderSelectForAlloc = (state) => state.appState.orderSelectForAl
 export const getFilteredText = (state) => state.appState.filterText;
 
 export const getFilterUnentered = (state) => state.appState.filterOnlyUnentered;
+
+export const getSelectZone = (state) => state.appState.selectZone;
+
+export const getSelectRow = (state) => state.appState.selectRow;
