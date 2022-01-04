@@ -73,7 +73,6 @@ const NameList = ({ people,
         return <tr className={trColor}>
             {orderCell}
             <td>{person.name}</td>
-            <td>{person.tixType}</td>
             <td>{person.telephone}</td>
             <td>{alloc}</td>
             <td>
@@ -98,9 +97,8 @@ const NameList = ({ people,
             <tr>
                 <th>Order</th>
                 <th>Name</th>
-                <th>Ticket Type</th>
                 <th>Mobile</th>
-                <th>Allocated Seat</th>
+                <th>Seat</th>
                 <th>Actions</th>
             </tr>
         </thead>
