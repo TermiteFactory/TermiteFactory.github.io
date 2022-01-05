@@ -87,7 +87,7 @@ const NameList = ({ people,
             {orderCell}
             <td>{highlightText(person.name, filteredText)}</td>
             <td>{highlightText(person.telephone, filteredText)}</td>
-            <td>{alloc}</td>
+            <td>{highlightText(alloc, filteredText)}</td>
             <td>
                 <Button variant={allocated ? "success" : "outline-success"}
                     onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
