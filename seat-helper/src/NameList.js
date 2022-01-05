@@ -96,7 +96,7 @@ const NameList = ({ people,
                 <Button variant={person.checkin ? "secondary" : "outline-secondary"}
                     className='ml-1'
                     onClick={() => person.checkin ? onUnCheckIn(person.uniqueId) : onCheckIn(person.uniqueId)}
-                    disabled={person.allocZone == null}>Check In</Button>
+                    disabled={allocated || person.allocZone == null}>Check In</Button>
                 <Button variant={person.absent ? "info" : "outline-info"}
                     onClick={() => person.absent ? onUnAbsent(person.uniqueId) : onAbsent(person.uniqueId)}
                     disabled={allocated || person.checkin}
