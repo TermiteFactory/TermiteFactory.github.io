@@ -83,9 +83,15 @@ const NameList = ({ people,
         const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}>{person.orderNum}</td> : null;
         const allocated = idsSelectForAlloc.indexOf(person.uniqueId) !== -1;
 
+        const regex = /([0-9]\/[0-9])[- ]*\((.+)\//g;
+        const found = person.tixType.matchAll(regex);
+        let shortTix = ''
+        Array.from(found, x => shortTix += `${x[1]} (${x[2]})`)
+
         return <tr className={trColor}>
             {orderCell}
             <td>{highlightText(person.name, filteredText)}</td>
+            <td>{shortTix}</td>
             <td>{highlightText(person.telephone, filteredText)}</td>
             <td>{highlightText(alloc, filteredText)}</td>
             <td>
@@ -110,6 +116,7 @@ const NameList = ({ people,
             <tr>
                 <th>Order</th>
                 <th>Name</th>
+                <th>Ticket</th>
                 <th>Mobile</th>
                 <th>Seat</th>
                 <th>Actions</th>

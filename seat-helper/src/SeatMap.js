@@ -62,6 +62,7 @@ const RowContainer = styled.div``
 
 const ConfirmButton = styled(Button)`
     position: relative;
+    margin-top: 5px;
 `
 
 const Footer = styled.div`

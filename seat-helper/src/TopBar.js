@@ -1,4 +1,4 @@
-import { Navbar, Container, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { Navbar, Container, Button, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import {
     getPeople,
@@ -7,16 +7,24 @@ import {
     createFilterOnlyUnentered,
     createUnFilterOnlyUnentered,
     getFilteredText,
-    getFilterUnentered
+    getFilterUnentered,
+    getActivatedZones,
+    getMenu,
+    createMenu,
+    createUnmenu,
 } from './redux';
 
 const TopBar = ({ people,
     zoneInfo,
+    activatedZones,
     filteredText,
     filterUnenetered,
+    menu,
     onFilterText,
     onFilterUnEntered,
-    onUnfilterUnentered }) => {
+    onUnfilterUnentered,
+    onMenu,
+    onUnmenu }) => {
 
     const allocstats = people.reduce((result, person) => {
         if (person.allocZone === null) {
@@ -34,21 +42,24 @@ const TopBar = ({ people,
     }, { unalloc: 0 });
 
     const avail = zoneInfo.reduce((result, zone) => {
+        if (activatedZones.indexOf(zone.id) === -1) {
+            return result;
+        }
         const alloc = allocstats[zone.id] == null ? 0 : allocstats[zone.id]
-        return `${result}${zone.rows * zone.seats - alloc} (Zone ${zone.id}), `;
+        return `${result}${zone.rows * zone.seats - alloc} (${zone.id}), `;
     }, '');
 
     return <Navbar bg="dark" variant="dark" sticky="top">
         <Container>
             <Navbar.Brand>Seat Helper</Navbar.Brand>
-            <div class="input-group">
+            <div className="input-group">
                 <FormControl
                 placeholder="Filter Names"
                 value={filteredText}
                 onChange={e => onFilterText(e.target.value)}
                 />
-                <span class="input-group-append">
-                    <button class="btn btn-light border-start-0 border" type="button"
+                <span className="input-group-append">
+                    <button className="btn btn-light border-start-0 border" type="button"
                         onClick={() => onFilterText('')}>
                         &#10006;
                     </button>
@@ -68,6 +79,11 @@ const TopBar = ({ people,
                     Space: {avail}
                 </div>
             </Navbar.Text>
+            <Button
+                variant={menu ? "primary" : "outline-secondary"}
+                className="text-nowrap ml-3"
+                onClick={() => menu ? onUnmenu() : onMenu()}>
+                <strong>&#8801;</strong></Button>
         </Container>
     </Navbar>
 };
@@ -75,14 +91,18 @@ const TopBar = ({ people,
 const mapStateToProps = state => ({
     people: getPeople(state),
     zoneInfo: getZoneInfo(state),
+    activatedZones: getActivatedZones(state),
     filteredText: getFilteredText(state),
     filterUnenetered: getFilterUnentered(state),
+    menu: getMenu(state),
 });
 
 const mapDispatchToProps = dispatch => ({
     onFilterText: (text) => dispatch(createFilterText(text)),
     onFilterUnEntered: () => dispatch(createFilterOnlyUnentered()),
     onUnfilterUnentered: () => dispatch(createUnFilterOnlyUnentered()),
+    onMenu: () => dispatch(createMenu()),
+    onUnmenu: () => dispatch(createUnmenu()),
 });
 
 export default connect(

@@ -95,6 +95,39 @@ export const createChooseSeat = (zone, row) => {
     };
 };
 
+export const MENU = 'MENU';
+export const createMenu = () => {
+    return {
+        type: MENU,
+        payload: null
+    };
+};
+
+export const UNMENU = 'UNMENU';
+export const createUnmenu = () => {
+    return {
+        type: UNMENU,
+        payload: null
+    };
+};
+
+export const ADD_ZONE = 'ADD_ZONE';
+export const createAddZone = (zoneid) => {
+    return {
+        type: ADD_ZONE,
+        payload: zoneid
+    };
+};
+
+export const REMOVE_ZONE = 'REMOVE_ZONE';
+export const createRemoveZone = (zoneid) => {
+    return {
+        type: REMOVE_ZONE,
+        payload: zoneid
+    };
+};
+
+
 // Reducers 
 const initialAppState = {
     people: [
@@ -135,7 +168,7 @@ const initialAppState = {
             uniqueId: 3,
             orderNum: '2RBD-B7GF-74B',
             name: 'Mary Tan',
-            tixType: '2/1 - (A+B/Grand Staircase)',
+            tixType: '2/1-(CRYROOM/Carpark Entry)',
             telephone: '92234562',
             allocZone: null,
             allocRow: null,
@@ -155,6 +188,21 @@ const initialAppState = {
             id: 'B',
             rows: 10,
             seats: 8,
+        },
+        {
+            id: 'C',
+            rows: 10,
+            seats: 8,
+        },
+        {
+            id: 'D',
+            rows: 3,
+            seats: 7,
+        },
+        {
+            id: 'CR',
+            rows: 1,
+            seats: 16,
         }
     ],
     lastSelectZone: null,
@@ -162,6 +210,8 @@ const initialAppState = {
     selectRow: null,
     filterText: '',
     filterOnlyUnentered: false,
+    showMenu: false,
+    activatedZones: ['A', 'B']
 };
 
 export const appState = (state = initialAppState, action) => {
@@ -298,12 +348,40 @@ export const appState = (state = initialAppState, action) => {
                 }),
             };
         }
+        case MENU: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                showMenu: true,
+            };
+        }
+        case UNMENU: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                showMenu: false,
+            };
+        }
         case CHOOSE_SEAT: {
             // Update the person's checkin status to false
             return {
                 ...state,
                 selectZone: payload.zone,
                 selectRow: payload.row,
+            };
+        }
+        case ADD_ZONE: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                activatedZones: state.activatedZones.concat(payload)
+            };
+        }
+        case REMOVE_ZONE: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                activatedZones: state.activatedZones.filter(id => id !== payload)
             };
         }
         default:
@@ -341,3 +419,7 @@ export const getSelectZone = (state) => state.appState.selectZone;
 export const getSelectRow = (state) => state.appState.selectRow;
 
 export const getLastSelectZone = (state) => state.appState.lastSelectZone;
+
+export const getMenu = (state) => state.appState.showMenu;
+
+export const getActivatedZones = (state) => state.appState.activatedZones;
