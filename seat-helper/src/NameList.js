@@ -14,6 +14,19 @@ import {
 } from './redux';
 import { Table, Button } from 'react-bootstrap';
 
+function highlightText(text, searchstr) {
+    if (searchstr == null || searchstr === '') {
+        return text;
+    }
+    const idx = text.toLowerCase().indexOf(searchstr.toLowerCase())
+    if (idx === -1) {
+        return text;
+    } else {
+        return <p>{text.substring(0, idx)}
+            <mark><strong>{text.substring(idx, idx + searchstr.length)}</strong></mark>
+            {text.substring(idx + searchstr.length)}</p>;
+    }
+}
 
 const NameList = ({ people,
     idsSelectForAlloc,
@@ -32,7 +45,7 @@ const NameList = ({ people,
         if ((filteredText === '' ||
             person.name.toLowerCase().search(filteredText.toLowerCase()) !== -1 ||
             person.telephone.search(filteredText) !== -1 ||
-            filteredText === `${person.allocZone}${person.allocRow}`) &&
+            filteredText.toLowerCase() === `${person.allocZone}${person.allocRow}`.toLowerCase()) &&
             (!filterUnentered || (person.checkin === false && person.absent === false))) {
             result.push(person.orderNum);
         }
@@ -72,8 +85,8 @@ const NameList = ({ people,
 
         return <tr className={trColor}>
             {orderCell}
-            <td>{person.name}</td>
-            <td>{person.telephone}</td>
+            <td>{highlightText(person.name, filteredText)}</td>
+            <td>{highlightText(person.telephone, filteredText)}</td>
             <td>{alloc}</td>
             <td>
                 <Button variant={allocated ? "success" : "outline-success"}
