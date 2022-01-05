@@ -99,6 +99,7 @@ const SeatMap = ({ people,
 
         // Rows
         let selectionMade = false;
+        let overallocation = false;
         const content = zoneInfo.reduce((result, zone) => {
             if (activatedZones.indexOf(zone.id) === -1) {
                 return result;
@@ -135,6 +136,8 @@ const SeatMap = ({ people,
                             row.push(<Seat type='taken' left_mark='true' />)
                         } else if (j === (takenList[key] - 1)) {
                             row.push(<Seat type='taken' right_mark='true' />)
+                        } else {
+                            row.push(<Seat type='taken' />)
                         }
                         remaining--;
                     }
@@ -150,9 +153,15 @@ const SeatMap = ({ people,
                             row.push(<Seat type='chosen' left_mark='true' />)
                         } else if (j === (idSelectForAlloc.length - 1)) {
                             row.push(<Seat type='chosen' right_mark='true' />)
+                        } else {
+                            row.push(<Seat type='chosen' />)
                         }
                         remaining--;
                     }
+                }
+
+                if (selectionMade && remaining < 0) {
+                    overallocation = true;
                 }
 
                 // Render Free
@@ -184,7 +193,10 @@ const SeatMap = ({ people,
                     </Col>
                 </Row>
             </Tab.Container>
-            <ConfirmButton onClick={() => onDoneAlloc()}>{selectionMade ? 'Confirm New Selection' : 'Exit and Erase Previous Allocation'}</ConfirmButton>
+            <ConfirmButton onClick={() => onDoneAlloc()}
+                variant={overallocation ? "danger " : "primary"}>
+                {selectionMade ? overallocation ? 'Confirm OverAllocated Row' : 'Confirm New Selection' : 'Exit and Erase Previous Allocation'}
+            </ConfirmButton>
         </Footer>
     } else {
         return <></>;

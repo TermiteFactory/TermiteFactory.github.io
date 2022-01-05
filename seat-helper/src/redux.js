@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { parse } from 'papaparse';
 
 // Actions
 export const SELECT_ID = 'SELECT_ID';
@@ -127,6 +128,15 @@ export const createRemoveZone = (zoneid) => {
     };
 };
 
+export const FILE_LOADED = 'FILE_LOADED';
+export const createFileLoaded = (data) => {
+    return {
+        type: FILE_LOADED,
+        payload: data
+    };
+};
+
+
 
 // Reducers 
 const initialAppState = {
@@ -156,7 +166,7 @@ const initialAppState = {
         {
             uniqueId: 2,
             orderNum: '2RBD-9VWL-1K9',
-            name: 'Tan Ah Kow',
+            name: 'Tan Ah Kow Super duper long name',
             tixType: '2/1 - (A+B/Grand Staircase)',
             telephone: '96314542',
             allocZone: null,
@@ -384,6 +394,35 @@ export const appState = (state = initialAppState, action) => {
                 activatedZones: state.activatedZones.filter(id => id !== payload)
             };
         }
+        case FILE_LOADED: {
+            if ('data' in payload) {
+                let id = 1;
+                return {
+                    ...state,
+                    people: payload.data.filter(person => {
+                        return person['Order number'] != null &&
+                            person['Guest name'] != null &&
+                            person['Ticket type'] != null &&
+                            person['Mobile Number'] != null;
+                    }).map(person => {
+                        return {
+                            uniqueId: id++,
+                            orderNum: person['Order number'],
+                            name: person['Guest name'],
+                            tixType: person['Ticket type'],
+                            telephone: person['Mobile Number'],
+                            allocZone: null,
+                            allocRow: null,
+                            checkin: false,
+                            absent: false,
+                        }
+                    }),
+                    activatedZones: [],
+                };
+            } else {
+                return state;
+            }
+        }
         default:
             return state;
     }
@@ -423,3 +462,22 @@ export const getLastSelectZone = (state) => state.appState.lastSelectZone;
 export const getMenu = (state) => state.appState.showMenu;
 
 export const getActivatedZones = (state) => state.appState.activatedZones;
+
+
+// Thunks
+export const loadFile = (fileObj) => async (dispatch, getState) => {
+    try {
+        parse(fileObj, {
+            complete: function (results) {
+                dispatch(
+                    createFileLoaded({ data: results.data })
+                );
+            },
+            header: true
+        });
+    } catch {
+        dispatch(
+            createFileLoaded({ error: `Error Loading File: ${fileObj.name}` })
+        );
+    }
+};

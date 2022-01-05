@@ -80,7 +80,7 @@ const NameList = ({ people,
             stripe = !stripe;
         }
         const trColor = stripe ? "table-active" : "table-light";
-        const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}><small>{person.orderNum}</small></td> : null;
+        const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}><div className="text-nowrap"><small>{person.orderNum}</small></div></td> : null;
         const allocated = idsSelectForAlloc.indexOf(person.uniqueId) !== -1;
 
         const regex = /([0-9]\/[0-9])[- ]*\((.+)\//g;
@@ -95,18 +95,20 @@ const NameList = ({ people,
             <td>{highlightText(person.telephone, filteredText)}</td>
             <td>{highlightText(alloc, filteredText)}</td>
             <td>
-                <Button variant={allocated ? "success" : "outline-success"}
-                    onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
-                    disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent || person.checkin}
-                    className='ml-1 btn-sm'>Allocate</Button>
-                <Button variant={person.checkin ? "secondary" : "outline-secondary"}
-                    className='ml-1 btn-sm'
-                    onClick={() => person.checkin ? onUnCheckIn(person.uniqueId) : onCheckIn(person.uniqueId)}
-                    disabled={allocated || person.allocZone == null}>Check In</Button>
-                <Button variant={person.absent ? "info" : "outline-info"}
-                    onClick={() => person.absent ? onUnAbsent(person.uniqueId) : onAbsent(person.uniqueId)}
-                    disabled={allocated || person.checkin}
-                    className='ml-1 btn-sm'>Absent</Button>
+                <div className="text-nowrap">
+                    <Button variant={allocated ? "success" : "outline-success"}
+                        onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
+                        disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent || person.checkin}
+                        className='ml-1 btn-sm'>Allocate</Button>
+                    <Button variant={person.checkin ? "secondary" : "outline-secondary"}
+                        className='ml-1 btn-sm'
+                        onClick={() => person.checkin ? onUnCheckIn(person.uniqueId) : onCheckIn(person.uniqueId)}
+                        disabled={allocated || person.allocZone == null}>Check In</Button>
+                    <Button variant={person.absent ? "info" : "outline-info"}
+                        onClick={() => person.absent ? onUnAbsent(person.uniqueId) : onAbsent(person.uniqueId)}
+                        disabled={allocated || person.checkin}
+                        className='ml-1 btn-sm'>Absent</Button>
+                </div>
             </td>
         </tr>
     });

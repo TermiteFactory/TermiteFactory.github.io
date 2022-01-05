@@ -7,6 +7,7 @@ import {
     getActivatedZones,
     createAddZone,
     createRemoveZone,
+    loadFile,
 } from './redux';
 import styled from 'styled-components'
 
@@ -68,7 +69,7 @@ const ZoneSelect = styled.div`
     display: block-inline;
 `
 
-const Menu = ({ menu, zoneInfo, activatedZones, onAddZone, onRemoveZone }) => {
+const Menu = ({ menu, zoneInfo, activatedZones, onAddZone, onRemoveZone, onFileSelected }) => {
     if (menu) {
         const zonesbuttons = zoneInfo.map(zone => {
             const activated = activatedZones.indexOf(zone.id) !== -1;
@@ -79,7 +80,7 @@ const Menu = ({ menu, zoneInfo, activatedZones, onAddZone, onRemoveZone }) => {
 
         return <MenuContainer>
             <h2>Options and Settings</h2>
-            <FileLoader></FileLoader>
+            <FileLoader onFileSelected={onFileSelected}></FileLoader>
             <ZoneSelect>
                 Select Active Zones
                 {zonesbuttons}
@@ -100,6 +101,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onAddZone: (id) => dispatch(createAddZone(id)),
     onRemoveZone: (id) => dispatch(createRemoveZone(id)),
+    onFileSelected: (fileDetails) => dispatch(loadFile(fileDetails)),
 });
 
 export default connect(
