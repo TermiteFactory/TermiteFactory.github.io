@@ -19,6 +19,15 @@
     border-color: #007bff !important;
 }
 
+.btn-outline-primary:not([disabled]):not(.disabled).active,
+.btn-outline-primary:not([disabled]):not(.disabled):active,
+.btn-outline-primary:not([disabled]):not(.disabled).hover,
+.btn-outline-primary:not([disabled]):not(.disabled):hover{
+    color: #007bff !important;
+    background-color: transparent!important;
+    border-color: #007bff !important;
+}
+
 .btn-secondary:not([disabled]):not(.disabled).active,
 .btn-secondary:not([disabled]):not(.disabled):active,
 .btn-secondary:not([disabled]):not(.disabled).hover,

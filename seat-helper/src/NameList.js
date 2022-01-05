@@ -98,15 +98,15 @@ const NameList = ({ people,
                 <Button variant={allocated ? "success" : "outline-success"}
                     onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
                     disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent || person.checkin}
-                    className='ml-1'>Allocate</Button>
+                    className='ml-1 btn-sm'>Allocate</Button>
                 <Button variant={person.checkin ? "secondary" : "outline-secondary"}
-                    className='ml-1'
+                    className='ml-1 btn-sm'
                     onClick={() => person.checkin ? onUnCheckIn(person.uniqueId) : onCheckIn(person.uniqueId)}
                     disabled={allocated || person.allocZone == null}>Check In</Button>
                 <Button variant={person.absent ? "info" : "outline-info"}
                     onClick={() => person.absent ? onUnAbsent(person.uniqueId) : onAbsent(person.uniqueId)}
                     disabled={allocated || person.checkin}
-                    className='ml-1'>Absent</Button>
+                    className='ml-1 btn-sm'>Absent</Button>
             </td>
         </tr>
     });

@@ -54,8 +54,8 @@ const MenuContainer = styled.div`
     border-radius: 10px;
     font-size: 16px;
     color: white;
-    left: 30vw;
-    width: 40vw;
+    left: 20vw;
+    width: 60vw;
     padding: 10px;
     top: 150px;
     position: fixed;
