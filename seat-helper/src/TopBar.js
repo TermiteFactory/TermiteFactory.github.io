@@ -41,11 +41,19 @@ const TopBar = ({ people,
     return <Navbar bg="dark" variant="dark" sticky="top">
         <Container>
             <Navbar.Brand>Seat Helper</Navbar.Brand>
+            <div class="input-group">
                 <FormControl
                 placeholder="Filter Names"
                 value={filteredText}
                 onChange={e => onFilterText(e.target.value)}
                 />
+                <span class="input-group-append">
+                    <button class="btn btn-light border-start-0 border" type="button"
+                        onClick={() => onFilterText('')}>
+                        &#10006;
+                    </button>
+                </span>
+            </div>
             <Button
                 className="text-nowrap ml-3"
                 variant={filterUnenetered ? "primary" : "outline-secondary"}
