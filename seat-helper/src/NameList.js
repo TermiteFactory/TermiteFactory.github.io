@@ -86,7 +86,7 @@ const NameList = ({ people,
         const regex = /([0-9]\/[0-9])[- ]*\((.+)\//g;
         const found = person.tixType.matchAll(regex);
         let shortTix = ''
-        Array.from(found, x => shortTix += `${x[1]} (${x[2]})`)
+        Array.from(found, x => shortTix += `${x[1]} ${x[2].substring(0, 3)}`)
 
         return <tr className={trColor}>
             {orderCell}
