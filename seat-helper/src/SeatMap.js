@@ -10,6 +10,7 @@ import {
     getLastSelectZone,
     createChooseSeat,
     createDoneAlloc,
+    getActivatedZones,
 } from './redux';
 
 const Seat = styled.div`
@@ -77,6 +78,7 @@ const Footer = styled.div`
 
 const SeatMap = ({ people,
     zoneInfo,
+    activatedZones,
     idSelectForAlloc,
     selectZone,
     selectRow,
@@ -87,6 +89,9 @@ const SeatMap = ({ people,
 
         // Tabs
         const tabs = zoneInfo.reduce((result, zone) => {
+            if (activatedZones.indexOf(zone.id) === -1) {
+                return result;
+            }
             return result.concat(<Nav.Item>
                 <Nav.Link eventKey={zone.id}>Zone {zone.id}</Nav.Link>
             </Nav.Item>)
@@ -95,6 +100,9 @@ const SeatMap = ({ people,
         // Rows
         let selectionMade = false;
         const content = zoneInfo.reduce((result, zone) => {
+            if (activatedZones.indexOf(zone.id) === -1) {
+                return result;
+            }
             const rows = []
             for (let i = 0; i < zone.rows; i++) {
                 let takenList = people.reduce((result, person) => {
@@ -186,6 +194,7 @@ const SeatMap = ({ people,
 const mapStateToProps = state => ({
     people: getPeople(state),
     zoneInfo: getZoneInfo(state),
+    activatedZones: getActivatedZones(state),
     idSelectForAlloc: getIdsSelectForAlloc(state),
     selectZone: getSelectZone(state),
     selectRow: getSelectRow(state),

@@ -80,7 +80,7 @@ const NameList = ({ people,
             stripe = !stripe;
         }
         const trColor = stripe ? "table-active" : "table-light";
-        const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}>{person.orderNum}</td> : null;
+        const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}><small>{person.orderNum}</small></td> : null;
         const allocated = idsSelectForAlloc.indexOf(person.uniqueId) !== -1;
 
         const regex = /([0-9]\/[0-9])[- ]*\((.+)\//g;
@@ -91,7 +91,7 @@ const NameList = ({ people,
         return <tr className={trColor}>
             {orderCell}
             <td>{highlightText(person.name, filteredText)}</td>
-            <td>{shortTix}</td>
+            <td><small>{shortTix}</small></td>
             <td>{highlightText(person.telephone, filteredText)}</td>
             <td>{highlightText(alloc, filteredText)}</td>
             <td>

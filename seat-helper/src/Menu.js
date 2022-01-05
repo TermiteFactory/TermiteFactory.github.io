@@ -57,7 +57,7 @@ const MenuContainer = styled.div`
     left: 20vw;
     width: 60vw;
     padding: 10px;
-    top: 150px;
+    top: 100px;
     position: fixed;
     text-align: center;
     background: rgba(150, 150, 150, 0.95);
