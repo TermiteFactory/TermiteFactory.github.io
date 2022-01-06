@@ -71,10 +71,9 @@ const NameList = ({ people,
     const allocateButtonRef = useRef({})
     useEffect(() => {
         if (scrollTo != null) {
-            const topBuffer = 3;
-            if (scrollTo > topBuffer) {
-                allocateButtonRef.current[scrollTo - topBuffer].scrollIntoView({ behavior: 'smooth' })
-            }
+            const yOffset = -200; // Off set the nav bar
+            const y = allocateButtonRef.current[scrollTo].getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
         }
     }, [scrollTo]);
 
@@ -105,7 +104,7 @@ const NameList = ({ people,
 
         return <tr className={trColor}>
             {orderCell}
-            <td>{highlightText(person.name, filteredText)}</td>
+            <td ref={el => allocateButtonRef.current[person.uniqueId] = el} >{highlightText(person.name, filteredText)}</td>
             <td><small>{shortTix}</small></td>
             <td>{highlightText(person.telephone, filteredText)}</td>
             <td>{highlightText(alloc, filteredText)}</td>
@@ -114,7 +113,6 @@ const NameList = ({ people,
                     <Button variant={allocated ? "success" : "outline-success"}
                         onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
                         disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent || person.checkin}
-                        ref={el => allocateButtonRef.current[person.uniqueId] = el}
                         className='ml-1 btn-sm'>Allocate</Button>
                     <Button variant={person.checkin ? "secondary" : "outline-secondary"}
                         className='ml-1 btn-sm'
