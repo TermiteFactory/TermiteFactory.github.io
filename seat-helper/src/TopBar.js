@@ -41,13 +41,16 @@ const TopBar = ({ people,
         }
     }, { unalloc: 0 });
 
-    const avail = zoneInfo.reduce((result, zone) => {
-        if (activatedZones.indexOf(zone.id) === -1) {
-            return result;
-        }
-        const alloc = allocstats[zone.id] == null ? 0 : allocstats[zone.id]
-        return `${result}${zone.rows * zone.seats - alloc} (${zone.id}), `;
-    }, '');
+    let avail = <div className="text-danger d-inline">Activate Zones!</div>
+    if (activatedZones.length > 0) {
+        avail = zoneInfo.reduce((result, zone) => {
+            if (activatedZones.indexOf(zone.id) === -1) {
+                return result;
+            }
+            const alloc = allocstats[zone.id] == null ? 0 : allocstats[zone.id]
+            return `${result}${zone.rows * zone.seats - alloc} (${zone.id}), `;
+        }, '');
+    }
 
     return <Navbar bg="dark" variant="dark" sticky="top">
         <Container>

@@ -74,6 +74,7 @@ const Footer = styled.div`
     overflow: scroll;
     padding: 10px;
     padding-left: 10vw;
+    box-shadow: 0px 0px 30px 1px #888888;
 `
 
 const SeatMap = ({ people,
@@ -118,7 +119,6 @@ const SeatMap = ({ people,
                     }
                     return result;
                 }, {});
-                console.log(takenList)
 
                 let rowSelected = selectZone === zone.id && (selectRow - 1) === i
                 let row = [<RowButtonContainer><Button className="btn-sm"
@@ -177,7 +177,8 @@ const SeatMap = ({ people,
             </Tab.Pane>)
         }, [])
 
-        const defaultZone = lastSelectZone == null ? zoneInfo[0].id : lastSelectZone
+        const firstZone = zoneInfo.find(zone => zone.id === activatedZones[0]);
+        const defaultZone = lastSelectZone == null ? firstZone.id : lastSelectZone
         return <Footer>
             <Tab.Container id="left-tabs-example" defaultActiveKey={defaultZone}>
                 <Row>
