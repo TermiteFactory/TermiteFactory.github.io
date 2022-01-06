@@ -27,7 +27,7 @@ const TopBar = ({ people,
     onUnmenu }) => {
 
     const allocstats = people.reduce((result, person) => {
-        if (person.allocZone === null) {
+        if (person.allocZone === null && !person.absent) {
             return {
                 ...result,
                 unalloc: result.unalloc + 1,
