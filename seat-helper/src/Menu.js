@@ -8,6 +8,7 @@ import {
     createAddZone,
     createRemoveZone,
     loadFile,
+    downloadFile,
 } from './redux';
 import styled from 'styled-components'
 
@@ -69,7 +70,7 @@ const ZoneSelect = styled.div`
     display: block-inline;
 `
 
-const Menu = ({ menu, zoneInfo, activatedZones, onAddZone, onRemoveZone, onFileSelected }) => {
+const Menu = ({ menu, zoneInfo, activatedZones, onAddZone, onRemoveZone, onFileSelected, onDownloadFile }) => {
     if (menu) {
         const zonesbuttons = zoneInfo.map(zone => {
             const activated = activatedZones.indexOf(zone.id) !== -1;
@@ -85,7 +86,8 @@ const Menu = ({ menu, zoneInfo, activatedZones, onAddZone, onRemoveZone, onFileS
                 Select Active Zones
                 {zonesbuttons}
             </ZoneSelect>
-            <Button variant="info" className="mt-1">Send Report</Button>
+            <Button variant="info" className="mt-1"
+                onClick={() => onDownloadFile('report.csv')}>Download Report</Button>
         </MenuContainer>
     } else {
         return null;
@@ -102,6 +104,7 @@ const mapDispatchToProps = dispatch => ({
     onAddZone: (id) => dispatch(createAddZone(id)),
     onRemoveZone: (id) => dispatch(createRemoveZone(id)),
     onFileSelected: (fileDetails) => dispatch(loadFile(fileDetails)),
+    onDownloadFile: (fileName) => dispatch(downloadFile(fileName)),
 });
 
 export default connect(

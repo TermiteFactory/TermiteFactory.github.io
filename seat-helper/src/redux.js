@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { parse } from 'papaparse';
+import { parse, unparse } from 'papaparse';
 
 // Actions
 export const SELECT_ID = 'SELECT_ID';
@@ -408,18 +408,10 @@ export const appState = (state = initialAppState, action) => {
                 let id = 1;
                 return {
                     ...state,
-                    people: payload.data.filter(person => {
-                        return person['Order number'] != null &&
-                            person['Guest name'] != null &&
-                            person['Ticket type'] != null &&
-                            person['Mobile Number'] != null;
-                    }).map(person => {
+                    people: payload.data.map(person => {
                         return {
                             uniqueId: id++,
-                            orderNum: person['Order number'],
-                            name: person['Guest name'],
-                            tixType: person['Ticket type'],
-                            telephone: person['Mobile Number'],
+                            ...person,
                             allocZone: null,
                             allocRow: null,
                             checkin: false,
@@ -481,14 +473,42 @@ export const getActivatedZones = (state) => state.appState.activatedZones;
 
 export const getScrollTo = (state) => state.appState.scrollTo;
 
+const fieldMapping = {
+    'Order number': 'orderNum',
+    'Guest name': 'name',
+    'Ticket type': 'tixType',
+    'Mobile Number': 'telephone',
+}
+
 // Thunks
 export const loadFile = (fileObj) => async (dispatch, getState) => {
     try {
         parse(fileObj, {
-            complete: function (results) {
-                dispatch(
-                    createFileLoaded({ data: results.data })
-                );
+            complete: (results) => {
+                const actualMap = {}
+                Object.keys(results.data[0]).forEach(heading => {
+                    Object.keys(fieldMapping).forEach(key => {
+                        if (heading.indexOf(key) !== -1) {
+                            actualMap[heading] = fieldMapping[key]
+                        }
+                    })
+                })
+                const mappedData = results.data.filter(person => {
+                    let ok = true;
+                    Object.keys(actualMap).forEach(key => {
+                        if (person[key] == null) {
+                            ok = false;
+                        }
+                    })
+                    return ok;
+                }).map(person => {
+                    const new_person = {}
+                    Object.keys(actualMap).forEach(key => {
+                        new_person[actualMap[key]] = person[key]
+                    })
+                    return new_person
+                })
+                dispatch(createFileLoaded({ data: mappedData }));
             },
             header: true
         });
@@ -497,4 +517,36 @@ export const loadFile = (fileObj) => async (dispatch, getState) => {
             createFileLoaded({ error: `Error Loading File: ${fileObj.name}` })
         );
     }
+};
+
+
+export const downloadFile = (fileName) => async (dispatch, getState) => {
+    const fields = Object.keys(fieldMapping);
+    fields.push('Zone')
+    fields.push('Row')
+    fields.push('Checkin')
+    fields.push('Absent')
+    const state = getState();
+    const mappedData = state.appState.people.map(person => {
+        const new_person = {}
+        Object.keys(fieldMapping).forEach(key => {
+            new_person[key] = person[fieldMapping[key]]
+        })
+        new_person['Zone'] = person.allocZone
+        new_person['Row'] = person.allocRow
+        new_person['Checkin'] = person.checkin
+        new_person['Absent'] = person.absent
+        return new_person;
+    })
+    const csv = unparse({
+        data: mappedData,
+        fields
+    });
+    const blob = new Blob([csv]);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob, { type: 'text/plain' });
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 };

@@ -97,10 +97,7 @@ const NameList = ({ people,
         const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}><div className="text-nowrap"><small>{person.orderNum}</small></div></td> : null;
         const allocated = idsSelectForAlloc.indexOf(person.uniqueId) !== -1;
 
-        const regex = /([0-9]\/[0-9])[- ]*\((.+)\//g;
-        const found = person.tixType.matchAll(regex);
-        let shortTix = ''
-        Array.from(found, x => shortTix += `${x[1]} ${x[2].substring(0, 3)}`)
+        let shortTix = person.tixType.substring(0, 14)
 
         return <tr className={trColor}>
             {orderCell}
