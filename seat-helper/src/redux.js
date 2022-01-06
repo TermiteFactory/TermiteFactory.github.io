@@ -206,8 +206,8 @@ const initialAppState = {
         },
         {
             id: 'D',
-            rows: 3,
-            seats: 7,
+            rows: 7,
+            seats: 3,
         },
         {
             id: 'CR',
