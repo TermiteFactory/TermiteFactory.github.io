@@ -10,9 +10,11 @@ import {
     createCheckIn,
     createUnCheckIn,
     createAbsent,
-    createUnAbsent
+    createUnAbsent,
+    getScrollTo,
 } from './redux';
 import { Table, Button } from 'react-bootstrap';
+import React, { useRef, useEffect } from 'react'
 
 function highlightText(text, searchstr) {
     if (searchstr == null || searchstr === '') {
@@ -33,6 +35,7 @@ const NameList = ({ people,
     orderSelectForAlloc,
     filteredText,
     filterUnentered,
+    scrollTo,
     onAllocated,
     onUnallocated,
     onCheckIn,
@@ -64,8 +67,20 @@ const NameList = ({ people,
         return first.orderNum < second.orderNum;
     });
 
+    // Reference ref
+    const allocateButtonRef = useRef({})
+    useEffect(() => {
+        if (scrollTo != null) {
+            const topBuffer = 3;
+            if (scrollTo > topBuffer) {
+                allocateButtonRef.current[scrollTo - topBuffer].scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+    }, [scrollTo]);
+
     let stripe = false;
     const rows = filtered_people.map((person, index, array) => {
+
         const alloc = person.allocZone == null ? '' : `${person.allocZone}${person.allocRow}`
 
         // Invert the stripe
@@ -99,6 +114,7 @@ const NameList = ({ people,
                     <Button variant={allocated ? "success" : "outline-success"}
                         onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
                         disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent || person.checkin}
+                        ref={el => allocateButtonRef.current[person.uniqueId] = el}
                         className='ml-1 btn-sm'>Allocate</Button>
                     <Button variant={person.checkin ? "secondary" : "outline-secondary"}
                         className='ml-1 btn-sm'
@@ -136,6 +152,7 @@ const mapStateToProps = state => ({
     orderSelectForAlloc: getOrderSelectForAlloc(state),
     filteredText: getFilteredText(state),
     filterUnentered: getFilterUnentered(state),
+    scrollTo: getScrollTo(state),
 });
 
 const mapDispatchToProps = dispatch => ({

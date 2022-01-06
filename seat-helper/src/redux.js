@@ -136,6 +136,14 @@ export const createFileLoaded = (data) => {
     };
 };
 
+export const ADJUST_SCROLL = 'ADJUST_SCROLL';
+export const createAdjustScroll = (person) => {
+    return {
+        type: ADJUST_SCROLL,
+        payload: person
+    };
+};
+
 
 
 // Reducers 
@@ -221,7 +229,8 @@ const initialAppState = {
     filterText: '',
     filterOnlyUnentered: false,
     showMenu: false,
-    activatedZones: ['A', 'B']
+    activatedZones: ['A', 'B'],
+    scrollTo: null,
 };
 
 export const appState = (state = initialAppState, action) => {
@@ -423,6 +432,13 @@ export const appState = (state = initialAppState, action) => {
                 return state;
             }
         }
+        case ADJUST_SCROLL: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                scrollTo: payload
+            };
+        }
         default:
             return state;
     }
@@ -463,6 +479,7 @@ export const getMenu = (state) => state.appState.showMenu;
 
 export const getActivatedZones = (state) => state.appState.activatedZones;
 
+export const getScrollTo = (state) => state.appState.scrollTo;
 
 // Thunks
 export const loadFile = (fileObj) => async (dispatch, getState) => {

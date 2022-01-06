@@ -11,6 +11,7 @@ import {
     createChooseSeat,
     createDoneAlloc,
     getActivatedZones,
+    createAdjustScroll,
 } from './redux';
 
 const Seat = styled.div`
@@ -85,8 +86,12 @@ const SeatMap = ({ people,
     selectRow,
     lastSelectZone,
     onChooseSeat,
-    onDoneAlloc }) => {
+    onDoneAlloc,
+    onSeatMapShow }) => {
     if (idSelectForAlloc.length > 0) {
+
+        // Seat map is shown for person
+        onSeatMapShow(idSelectForAlloc[0]);
 
         // Tabs
         const tabs = zoneInfo.reduce((result, zone) => {
@@ -217,6 +222,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onChooseSeat: (zone, row) => dispatch(createChooseSeat(zone, row)),
     onDoneAlloc: () => dispatch(createDoneAlloc()),
+    onSeatMapShow: (person) => dispatch(createAdjustScroll(person))
 });
 
 export default connect(

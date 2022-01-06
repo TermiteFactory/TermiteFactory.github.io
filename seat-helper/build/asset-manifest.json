@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/seat-helper/build/static/css/main.b0163ad6.css",
-    "main.js": "/seat-helper/build/static/js/main.a536536c.js",
+    "main.js": "/seat-helper/build/static/js/main.b7e10892.js",
     "index.html": "/seat-helper/build/index.html",
     "main.b0163ad6.css.map": "/seat-helper/build/static/css/main.b0163ad6.css.map",
-    "main.a536536c.js.map": "/seat-helper/build/static/js/main.a536536c.js.map"
+    "main.b7e10892.js.map": "/seat-helper/build/static/js/main.b7e10892.js.map"
   },
   "entrypoints": [
     "static/css/main.b0163ad6.css",
-    "static/js/main.a536536c.js"
+    "static/js/main.b7e10892.js"
   ]
 }
