@@ -496,17 +496,29 @@ export const appState = (state = initialAppState, action) => {
     }
 };
 
+// Read from Local Storage
+const preloadedState = localStorage.getItem('reduxState')
+    ? JSON.parse(localStorage.getItem('reduxState'))
+    : {}
+
 // Store
 export const store = configureStore({
     reducer: {
         appState,
     },
+    preloadedState,
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
             //immutableCheck: false,
             //serializableCheck: false
         })
 });
+
+// Subscribe to changes in the state
+store.subscribe(() => {
+    localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+})
+
 
 // Selectors 
 export const getPeople = (state) => state.appState.people;
