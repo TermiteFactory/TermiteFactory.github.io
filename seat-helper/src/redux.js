@@ -448,6 +448,7 @@ export const appState = (state = initialAppState, action) => {
                     filterText: '',
                     filterOnlyUnentered: false,
                     activatedZones: [],
+                    activeTickets: [],
                     loadedFile: payload.filename,
                 };
             } else {

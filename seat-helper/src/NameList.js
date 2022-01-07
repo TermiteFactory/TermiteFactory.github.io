@@ -100,13 +100,13 @@ const NameList = ({ people,
         const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}><div className="text-nowrap"><small>{person.orderNum}</small></div></td> : null;
         const allocated = idsSelectForAlloc.indexOf(person.uniqueId) !== -1;
 
-        let shortTix = person.tixType.substring(0, 14)
+        let shortTix = person.tixType.substring(0, 12)
 
         return <tr className={trColor}>
             {orderCell}
             <td ref={el => allocateButtonRef.current[person.uniqueId] = el} >{highlightText(person.name, filteredText)}</td>
-            <td><small>{shortTix}</small></td>
-            <td>{highlightText(person.telephone, filteredText)}</td>
+            <td><div className="text-nowrap"><small>{shortTix}</small></div></td>
+            <td><small>{highlightText(person.telephone, filteredText)}</small></td>
             <td>{highlightText(alloc, filteredText)}</td>
             <td>
                 <div className="text-nowrap">
@@ -117,7 +117,7 @@ const NameList = ({ people,
                     <Button variant={person.checkin ? "secondary" : "outline-secondary"}
                         className='ml-1 btn-sm'
                         onClick={() => person.checkin ? onUnCheckIn(person.uniqueId) : onCheckIn(person.uniqueId)}
-                        disabled={allocated || person.allocZone == null}>Check In</Button>
+                        disabled={allocated || person.allocZone == null}>Enter</Button>
                     <Button variant={person.absent ? "info" : "outline-info"}
                         onClick={() => person.absent ? onUnAbsent(person.uniqueId) : onAbsent(person.uniqueId)}
                         disabled={allocated || person.checkin}
@@ -148,12 +148,12 @@ const NameList = ({ people,
 
     rows.push(<tr>
         <td><div className="text-nowrap"><small>ENTRY-ORDER</small></div></td>
-        <td><FormControl type="text" placeholder='Name' className='col-sm-12'
+        <td><FormControl type="text" placeholder='Name' className='col-sm-14'
             onChange={(e) => e.target.value !== '' ? setNameOk(true) : setNameOk(false)}
             ref={nameInputRef}></FormControl></td>
         <td><div className="text-nowrap"><small>On Entry</small></div></td>
         <td><FormControl type="text" placeholder='Mobile'
-            className='col-sm-12'
+            className='col-sm-14'
             ref={modbileInputRef}></FormControl></td>
         <td></td>
         <td><Button variant="primary"
