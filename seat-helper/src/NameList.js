@@ -169,7 +169,7 @@ const NameList = ({ people,
                 <th>Name</th>
                 <th>Ticket</th>
                 <th>Mobile</th>
-                <th>Seat</th>
+                <th>Loc</th>
                 <th>Actions</th>
             </tr>
         </thead>
