@@ -456,11 +456,13 @@ export const appState = (state = initialAppState, action) => {
         }
         case ADD_PERSON: {
             // Update the person's checkin status to false
+            const nextId = state.people.reduce((result, person) => person.uniqueId > result ? person.uniqueId : result, 0) + 1;
             return {
                 ...state,
                 people: state.people.concat({
                     ...payload,
-                    uniqueId: state.people.reduce((result, person) => person.uniqueId > result ? person.uniqueId : result, 0),
+                    orderNum: `ENTRY-ORDER-${nextId}`,
+                    uniqueId: nextId,
                     allocZone: null,
                     allocRow: null,
                     checkin: false,
