@@ -136,14 +136,29 @@ export const createFileLoaded = (data) => {
     };
 };
 
-export const ADJUST_SCROLL = 'ADJUST_SCROLL';
-export const createAdjustScroll = (person) => {
+export const ADD_PERSON = 'ADD_PERSON';
+export const createAddPerson = (person) => {
     return {
-        type: ADJUST_SCROLL,
+        type: ADD_PERSON,
         payload: person
     };
 };
 
+export const ADD_ACTIVETICKETS = 'ADD_ACTIVETICKETS';
+export const createAddActiveTickets = (ticket) => {
+    return {
+        type: ADD_ACTIVETICKETS,
+        payload: ticket
+    };
+};
+
+export const REMOVE_ACTIVETICKETS = 'REMOVE_ACTIVETICKETS';
+export const createRemoveActiveTickets = (ticket) => {
+    return {
+        type: REMOVE_ACTIVETICKETS,
+        payload: ticket
+    };
+};
 
 
 // Reducers 
@@ -230,7 +245,8 @@ const initialAppState = {
     filterOnlyUnentered: false,
     showMenu: false,
     activatedZones: ['A', 'B'],
-    scrollTo: null,
+    loadedFile: 'test_data.csv',
+    activeTickets: ['2/1 - (A+B/Grand Staircase)', '2/1-(CRYROOM/Carpark Entry)'],
 };
 
 export const appState = (state = initialAppState, action) => {
@@ -418,17 +434,44 @@ export const appState = (state = initialAppState, action) => {
                             absent: false,
                         }
                     }),
+                    lastSelectZone: null,
+                    selectZone: null,
+                    selectRow: null,
+                    filterText: '',
+                    filterOnlyUnentered: false,
                     activatedZones: [],
+                    loadedFile: payload.filename,
                 };
             } else {
                 return state;
             }
         }
-        case ADJUST_SCROLL: {
+        case ADD_PERSON: {
             // Update the person's checkin status to false
             return {
                 ...state,
-                scrollTo: payload
+                people: state.people.concat({
+                    ...payload,
+                    uniqueId: state.people.reduce((result, person) => person.uniqueId > result ? person.uniqueId : result, 0),
+                    allocZone: null,
+                    allocRow: null,
+                    checkin: false,
+                    absent: false,
+                })
+            };
+        }
+        case ADD_ACTIVETICKETS: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                activeTickets: state.activeTickets.concat(payload),
+            };
+        }
+        case REMOVE_ACTIVETICKETS: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                activeTickets: state.activeTickets.filter(tix => payload !== tix)
             };
         }
         default:
@@ -471,7 +514,9 @@ export const getMenu = (state) => state.appState.showMenu;
 
 export const getActivatedZones = (state) => state.appState.activatedZones;
 
-export const getScrollTo = (state) => state.appState.scrollTo;
+export const getLoadedFile = (state) => state.appState.loadedFile;
+
+export const getActiveTickets = (state) => state.appState.activeTickets;
 
 const fieldMapping = {
     'Order number': 'orderNum',
@@ -508,7 +553,7 @@ export const loadFile = (fileObj) => async (dispatch, getState) => {
                     })
                     return new_person
                 })
-                dispatch(createFileLoaded({ data: mappedData }));
+                dispatch(createFileLoaded({ data: mappedData, filename: fileObj.name }));
             },
             header: true
         });

@@ -11,10 +11,11 @@ import {
     createUnCheckIn,
     createAbsent,
     createUnAbsent,
-    getScrollTo,
+    createAddPerson,
+    getActiveTickets,
 } from './redux';
 import { Table, Button } from 'react-bootstrap';
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 function highlightText(text, searchstr) {
     if (searchstr == null || searchstr === '') {
@@ -35,13 +36,14 @@ const NameList = ({ people,
     orderSelectForAlloc,
     filteredText,
     filterUnentered,
-    scrollTo,
+    activeTix,
     onAllocated,
     onUnallocated,
     onCheckIn,
     onUnCheckIn,
     onAbsent,
-    onUnAbsent }) => {
+    onUnAbsent,
+    onNewPerson }) => {
 
     // Filter
     const filtered_orders = people.reduce((result, person) => {
@@ -49,7 +51,8 @@ const NameList = ({ people,
             person.name.toLowerCase().search(filteredText.toLowerCase()) !== -1 ||
             person.telephone.search(filteredText) !== -1 ||
             filteredText.toLowerCase() === `${person.allocZone}${person.allocRow}`.toLowerCase()) &&
-            (!filterUnentered || (person.checkin === false && person.absent === false))) {
+            (!filterUnentered || (person.checkin === false && person.absent === false)) &&
+            activeTix.indexOf(person.tixType) !== -1) {
             result.push(person.orderNum);
         }
         return result;
@@ -70,12 +73,12 @@ const NameList = ({ people,
     // Reference ref
     const allocateButtonRef = useRef({})
     useEffect(() => {
-        if (scrollTo != null) {
+        if (idsSelectForAlloc.length > 0) {
             const yOffset = -200; // Off set the nav bar
-            const y = allocateButtonRef.current[scrollTo].getBoundingClientRect().top + window.pageYOffset + yOffset;
+            const y = allocateButtonRef.current[idsSelectForAlloc[0]].getBoundingClientRect().top + window.pageYOffset + yOffset;
             window.scrollTo({ top: y, behavior: 'smooth' });
         }
-    }, [scrollTo]);
+    }, [idsSelectForAlloc]);
 
     let stripe = false;
     const rows = filtered_people.map((person, index, array) => {
@@ -124,6 +127,39 @@ const NameList = ({ people,
         </tr>
     });
 
+    const nameInputRef = useRef(null);
+    const modbileInputRef = useRef(null);
+    const [nameOk, setNameOk] = useState(false);
+
+    function handleSubmit() {
+        if (nameInputRef.current.value.length > 0) {
+            const person = {
+                orderNum: 'ENTRY-ORDER',
+                name: nameInputRef.current.value,
+                tixType: 'On Entry',
+                telephone: modbileInputRef.current.value,
+            }
+            onNewPerson(person)
+            setNameOk(false);
+            nameInputRef.current.value = '';
+            modbileInputRef.current.value = '';
+        }
+    }
+
+    rows.push(<tr>
+        <td><div className="text-nowrap"><small>ENTRY-ORDER</small></div></td>
+        <td><input type="text" placeholder='Fill Name'
+            onChange={(e) => e.target.value !== '' ? setNameOk(true) : setNameOk(false)}
+            ref={nameInputRef}></input></td>
+        <td><div className="text-nowrap"><small>On Entry</small></div></td>
+        <td><input type="text" placeholder='Fill Mobile' ref={modbileInputRef}></input></td>
+        <td></td>
+        <td><Button variant="primary"
+            onClick={() => handleSubmit()}
+            disabled={!nameOk}
+            className='ml-1 btn-sm'>Add Person</Button></td>
+    </tr>)
+
     return <Table>
         <thead>
             <tr>
@@ -147,7 +183,7 @@ const mapStateToProps = state => ({
     orderSelectForAlloc: getOrderSelectForAlloc(state),
     filteredText: getFilteredText(state),
     filterUnentered: getFilterUnentered(state),
-    scrollTo: getScrollTo(state),
+    activeTix: getActiveTickets(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -157,6 +193,7 @@ const mapDispatchToProps = dispatch => ({
     onUnCheckIn: (id) => dispatch(createUnCheckIn(id)),
     onAbsent: (id) => dispatch(createAbsent(id)),
     onUnAbsent: (id) => dispatch(createUnAbsent(id)),
+    onNewPerson: (person) => dispatch(createAddPerson(person)),
 });
 
 export default connect(
