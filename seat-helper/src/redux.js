@@ -475,6 +475,13 @@ export const appState = (state = initialAppState, action) => {
                 activeTickets: state.activeTickets.concat(payload),
             };
         }
+        case REMOVE_ACTIVETICKETS: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                activeTickets: state.activeTickets.filter(tix => payload !== tix)
+            };
+        }
         case RESET_DATA: {
             // Update the person's checkin status to false
             return {
