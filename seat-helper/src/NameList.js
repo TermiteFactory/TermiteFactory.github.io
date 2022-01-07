@@ -153,13 +153,13 @@ const NameList = ({ people,
             ref={nameInputRef}></FormControl></td>
         <td><div className="text-nowrap"><small>On Entry</small></div></td>
         <td><FormControl type="text" placeholder='Mobile'
-            className='col-sm-14'
+            className='col-sm-14 form-control-sm'
             ref={modbileInputRef}></FormControl></td>
         <td></td>
         <td><Button variant="primary"
             onClick={() => handleSubmit()}
             disabled={!nameOk}
-            className='ml-1 btn-sm'>Add Person</Button></td>
+            className='ml-1 btn-sm text-nowrap'>Add Person</Button></td>
     </tr>)
 
     return <Table>
