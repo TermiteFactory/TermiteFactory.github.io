@@ -14,7 +14,7 @@ import {
     createAddPerson,
     getActiveTickets,
 } from './redux';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, FormControl } from 'react-bootstrap';
 import React, { useRef, useEffect, useState } from 'react'
 
 function highlightText(text, searchstr) {
@@ -52,7 +52,7 @@ const NameList = ({ people,
             person.telephone.search(filteredText) !== -1 ||
             filteredText.toLowerCase() === `${person.allocZone}${person.allocRow}`.toLowerCase()) &&
             (!filterUnentered || (person.checkin === false && person.absent === false)) &&
-            activeTix.indexOf(person.tixType) !== -1) {
+            (activeTix.indexOf(person.tixType) !== -1 || person.tixType === 'On Entry')) {
             result.push(person.orderNum);
         }
         return result;
@@ -67,7 +67,7 @@ const NameList = ({ people,
 
     // Sort by order number
     filtered_people.sort((first, second) => {
-        return first.orderNum < second.orderNum;
+        return first.orderNum > second.orderNum;
     });
 
     // Reference ref
@@ -148,11 +148,13 @@ const NameList = ({ people,
 
     rows.push(<tr>
         <td><div className="text-nowrap"><small>ENTRY-ORDER</small></div></td>
-        <td><input type="text" placeholder='Fill Name'
+        <td><FormControl type="text" placeholder='Name' className='col-sm-12'
             onChange={(e) => e.target.value !== '' ? setNameOk(true) : setNameOk(false)}
-            ref={nameInputRef}></input></td>
+            ref={nameInputRef}></FormControl></td>
         <td><div className="text-nowrap"><small>On Entry</small></div></td>
-        <td><input type="text" placeholder='Fill Mobile' ref={modbileInputRef}></input></td>
+        <td><FormControl type="text" placeholder='Mobile'
+            className='col-sm-12'
+            ref={modbileInputRef}></FormControl></td>
         <td></td>
         <td><Button variant="primary"
             onClick={() => handleSubmit()}

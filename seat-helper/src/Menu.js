@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import React, { useRef } from 'react';
-import { Button } from 'react-bootstrap';
+import React, { useRef, useState } from 'react';
+import { Button, FormControl } from 'react-bootstrap';
 import {
     getMenu,
     getZoneInfo,
@@ -14,6 +14,7 @@ import {
     downloadFile,
     createRemoveActiveTickets,
     createAddActiveTickets,
+    createResetData,
 } from './redux';
 import styled from 'styled-components'
 
@@ -46,8 +47,7 @@ const FileLoader = ({ loadedFile, onFileSelected }) => {
                 onClick={handleClick}>Browse and Load CSV</Button>
             <div
                 style={{
-                    display: 'inline-block',
-                    left: '10px',
+                    top: '5px',
                     position: 'relative',
                 }}
             >
@@ -68,11 +68,11 @@ const MenuContainer = styled.div`
     position: fixed;
     text-align: center;
     background: rgba(150, 150, 150, 0.95);
+    z-index: 99;
 `
 
 const ZoneSelect = styled.div`
     padding: 10px;
-    display: block-inline;
 `
 
 const Menu = ({ menu,
@@ -87,6 +87,7 @@ const Menu = ({ menu,
     onDownloadFile,
     onRemoveTix,
     onAddTix,
+    onResetData,
 }) => {
 
     const alloczones = []
@@ -99,19 +100,21 @@ const Menu = ({ menu,
             }
             alloczones.push(person.allocZone);
         }
-        if (tixlist.indexOf(person.tixType) === -1) {
+        if (person.tixType !== 'On Entry' && tixlist.indexOf(person.tixType) === -1) {
             tixlist.push(person.tixType);
         }
     });
     console.log(alloctix)
 
+    const [resetOk, setResetOk] = useState(false);
+
     if (menu) {
         const tixbuttons = tixlist.map(ticket => {
             const activated = activatedTix.indexOf(ticket) !== -1;
             const occupied = alloctix.indexOf(ticket) !== -1;
-            return <Button variant={activated ? occupied ? "secondary" : "primary" : "outline-primary"}
+            return <div className="mt-1"><Button variant={activated ? occupied ? "secondary" : "primary" : "outline-primary"}
                 onClick={() => activated ? occupied ? () => { } : onRemoveTix(ticket) : onAddTix(ticket)}
-                className="ml-1">{ticket}</Button>
+                className="ml-1">{ticket}</Button></div>
         })
 
         const zonesbuttons = zoneInfo.map(zone => {
@@ -141,6 +144,14 @@ const Menu = ({ menu,
                     onDownloadFile(`${loadedFile.replace(/\.[^/.]+$/, "")}_${Date.now()}_report.csv`)}>
                 Download Report
             </Button>
+            <hr></hr>
+            <FormControl type='text' placeholder="Type 'RESET' here"
+                onChange={(e) => e.target.value === 'RESET' ? setResetOk(true) : setResetOk(false)}></FormControl>
+            <Button variant="info" className="mt-1"
+                disabled={!resetOk}
+                onClick={() => resetOk ? onResetData() : () => { }}>
+                Reset To Test data
+            </Button>
         </MenuContainer>
     } else {
         return null;
@@ -163,6 +174,7 @@ const mapDispatchToProps = dispatch => ({
     onDownloadFile: (fileName) => dispatch(downloadFile(fileName)),
     onRemoveTix: (ticket) => dispatch(createRemoveActiveTickets(ticket)),
     onAddTix: (ticket) => dispatch(createAddActiveTickets(ticket)),
+    onResetData: () => dispatch(createResetData()),
 });
 
 export default connect(

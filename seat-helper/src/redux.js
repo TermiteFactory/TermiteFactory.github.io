@@ -160,6 +160,14 @@ export const createRemoveActiveTickets = (ticket) => {
     };
 };
 
+export const RESET_DATA = 'RESET_DATA';
+export const createResetData = () => {
+    return {
+        type: RESET_DATA,
+        payload: null
+    };
+};
+
 
 // Reducers 
 const initialAppState = {
@@ -467,11 +475,10 @@ export const appState = (state = initialAppState, action) => {
                 activeTickets: state.activeTickets.concat(payload),
             };
         }
-        case REMOVE_ACTIVETICKETS: {
+        case RESET_DATA: {
             // Update the person's checkin status to false
             return {
-                ...state,
-                activeTickets: state.activeTickets.filter(tix => payload !== tix)
+                ...initialAppState,
             };
         }
         default:
@@ -572,7 +579,9 @@ export const downloadFile = (fileName) => async (dispatch, getState) => {
     fields.push('Checkin')
     fields.push('Absent')
     const state = getState();
-    const mappedData = state.appState.people.map(person => {
+    const mappedData = state.appState.people.filter(person => {
+        return state.appState.activeTickets.indexOf(person.tixType) !== -1 || person.tixType === 'On Entry'
+    }).map(person => {
         const new_person = {}
         Object.keys(fieldMapping).forEach(key => {
             new_person[key] = person[fieldMapping[key]]
