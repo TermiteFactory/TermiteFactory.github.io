@@ -67,7 +67,13 @@ const NameList = ({ people,
 
     // Sort by order number
     filtered_people.sort((first, second) => {
-        return first.orderNum > second.orderNum;
+        if (first.orderNum < second.orderNum) {
+            return -1;
+        } else if (first.orderNum === second.orderNum) {
+            return 0;
+        } else {
+            return 1;
+        }
     });
 
     // Reference ref
@@ -103,6 +109,7 @@ const NameList = ({ people,
         let shortTix = person.tixType.substring(0, 12)
 
         return <tr className={trColor}>
+            <td><small>{person.uniqueId}</small></td>
             {orderCell}
             <td ref={el => allocateButtonRef.current[person.uniqueId] = el} >{highlightText(person.name, filteredText)}</td>
             <td><div className="text-nowrap"><small>{shortTix}</small></div></td>
@@ -147,6 +154,7 @@ const NameList = ({ people,
     }
 
     rows.push(<tr>
+        <td><div className="text-nowrap"><small></small></div></td>
         <td><div className="text-nowrap"><small>ENTRY-ORDER</small></div></td>
         <td><FormControl type="text" placeholder='Name' className='col-sm-14'
             onChange={(e) => e.target.value !== '' ? setNameOk(true) : setNameOk(false)}
@@ -165,6 +173,7 @@ const NameList = ({ people,
     return <Table>
         <thead>
             <tr>
+                <th>Sn</th>
                 <th>Order</th>
                 <th>Name</th>
                 <th>Ticket</th>
