@@ -149,7 +149,7 @@ const Menu = ({ menu,
                 onChange={(e) => e.target.value === 'RESET' ? setResetOk(true) : setResetOk(false)}></FormControl>
             <Button variant="info" className="mt-1"
                 disabled={!resetOk}
-                onClick={() => resetOk ? onResetData() : () => { }}>
+                onClick={() => resetOk ? onResetData() && setResetOk(false) : () => { }}>
                 Reset To Test data
             </Button>
         </MenuContainer>

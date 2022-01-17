@@ -67,10 +67,22 @@ const NameList = ({ people,
 
     // Sort by order number
     filtered_people.sort((first, second) => {
-        if (first.orderNum < second.orderNum) {
+        if (first.tixType < second.tixType) {
             return -1;
-        } else if (first.orderNum === second.orderNum) {
-            return 0;
+        } else if (first.tixType === second.tixType) {
+            if (first.orderNum < second.orderNum) {
+                return -1;
+            } else if (first.orderNum === second.orderNum) {
+                if (first.uniqueId < second.uniqueId) {
+                    return -1;
+                } else if (first.uniqueId === second.uniqueId) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else {
+                return 1;
+            }
         } else {
             return 1;
         }
@@ -87,7 +99,8 @@ const NameList = ({ people,
     }, [idsSelectForAlloc]);
 
     let stripe = false;
-    const rows = filtered_people.map((person, index, array) => {
+    let serial_num = 0;
+    const rows = filtered_people.reduce((result, person, index, array) => {
 
         const alloc = person.allocZone == null ? '' : `${person.allocZone}${person.allocRow}`
 
@@ -106,13 +119,18 @@ const NameList = ({ people,
         const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}><div className="text-nowrap"><small>{person.orderNum}</small></div></td> : null;
         const allocated = idsSelectForAlloc.indexOf(person.uniqueId) !== -1;
 
-        let shortTix = person.tixType.substring(0, 12)
+        // Add a Ticket header
+        if (index === 0 || array[index - 1].tixType !== array[index].tixType) {
+            serial_num = 1;
+            result.push(<td colSpan="6" className="table-dark bg-primary text-center"><strong>{array[index].tixType}</strong></td>)
+        } else {
+            serial_num++;
+        }
 
-        return <tr className={trColor}>
-            <td><small>{person.uniqueId}</small></td>
+        return result.concat(<tr className={trColor}>
+            <td><small>{serial_num}</small></td>
             {orderCell}
             <td ref={el => allocateButtonRef.current[person.uniqueId] = el} >{highlightText(person.name, filteredText)}</td>
-            <td><div className="text-nowrap"><small>{shortTix}</small></div></td>
             <td><small>{highlightText(person.telephone, filteredText)}</small></td>
             <td>{highlightText(alloc, filteredText)}</td>
             <td>
@@ -131,8 +149,8 @@ const NameList = ({ people,
                         className='ml-1 btn-sm'>Absent</Button>
                 </div>
             </td>
-        </tr>
-    });
+        </tr>)
+    }, []);
 
     const nameInputRef = useRef(null);
     const modbileInputRef = useRef(null);
@@ -143,8 +161,8 @@ const NameList = ({ people,
             const person = {
                 orderNum: 'ENTRY-ORDER',
                 name: nameInputRef.current.value,
-                tixType: 'On Entry',
                 telephone: modbileInputRef.current.value,
+                tixType: 'On Entry',
             }
             onNewPerson(person)
             setNameOk(false);
@@ -153,13 +171,13 @@ const NameList = ({ people,
         }
     }
 
+    // Add New Entries
     rows.push(<tr>
         <td><div className="text-nowrap"><small></small></div></td>
         <td><div className="text-nowrap"><small>ENTRY-ORDER</small></div></td>
         <td><FormControl type="text" placeholder='Name' className='col-sm-14'
             onChange={(e) => e.target.value !== '' ? setNameOk(true) : setNameOk(false)}
             ref={nameInputRef}></FormControl></td>
-        <td><div className="text-nowrap"><small>On Entry</small></div></td>
         <td><FormControl type="text" placeholder='Mobile'
             className='col-sm-14 form-control-sm'
             ref={modbileInputRef}></FormControl></td>
@@ -176,7 +194,6 @@ const NameList = ({ people,
                 <th>Sn</th>
                 <th>Order</th>
                 <th>Name</th>
-                <th>Ticket</th>
                 <th>Mobile</th>
                 <th>Loc</th>
                 <th>Actions</th>
