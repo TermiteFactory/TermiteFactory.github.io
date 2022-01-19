@@ -45,28 +45,8 @@ const NameList = ({ people,
     onUnAbsent,
     onNewPerson }) => {
 
-    // Filter
-    const filtered_orders = people.reduce((result, person) => {
-        if ((filteredText === '' ||
-            person.name.toLowerCase().search(filteredText.toLowerCase()) !== -1 ||
-            person.telephone.search(filteredText) !== -1 ||
-            filteredText.toLowerCase() === `${person.allocZone}${person.allocRow}`.toLowerCase()) &&
-            (!filterUnentered || (person.checkin === false && person.absent === false)) &&
-            (activeTix.indexOf(person.tixType) !== -1 || person.tixType === 'On Entry')) {
-            result.push(person.orderNum);
-        }
-        return result;
-    }, []);
-
-    const filtered_people = people.reduce((result, person) => {
-        if (filtered_orders.indexOf(person.orderNum) !== -1) {
-            result.push(person);
-        }
-        return result;
-    }, []);
-
-    // Sort by order number
-    filtered_people.sort((first, second) => {
+    // Sort by ticket, order number and unique id
+    people.sort((first, second) => {
         if (first.tixType < second.tixType) {
             return -1;
         } else if (first.tixType === second.tixType) {
@@ -88,6 +68,42 @@ const NameList = ({ people,
         }
     });
 
+    // Extract Filtered Order Numbers
+    const filtered_orders = people.reduce((result, person) => {
+        if ((filteredText === '' ||
+            person.name.toLowerCase().search(filteredText.toLowerCase()) !== -1 ||
+            person.telephone.search(filteredText) !== -1 ||
+            filteredText.toLowerCase() === `${person.allocZone}${person.allocRow}`.toLowerCase()) &&
+            (!filterUnentered || (person.checkin === false && person.absent === false)) &&
+            (activeTix.indexOf(person.tixType) !== -1 || person.tixType === 'On Entry')) {
+            result.push(person.orderNum);
+        }
+        return result;
+    }, []);
+
+    let serial_num = 0;
+    const sn_people = people.map((person, index, array) => {
+        // Add a Ticket header
+        if (index === 0 || array[index - 1].tixType !== array[index].tixType) {
+            serial_num = 1;
+        } else {
+            serial_num++;
+        }
+        return {
+            sn: serial_num,
+            ...person
+        }
+    });
+
+    // Filter the orders
+    const filtered_people = sn_people.reduce((result, person) => {
+        if (filtered_orders.indexOf(person.orderNum) !== -1) {
+            result.push(person);
+        }
+        return result;
+    }, []);
+
+
     // Reference ref
     const allocateButtonRef = useRef({})
     useEffect(() => {
@@ -99,7 +115,6 @@ const NameList = ({ people,
     }, [idsSelectForAlloc]);
 
     let stripe = false;
-    let serial_num = 0;
     const rows = filtered_people.reduce((result, person, index, array) => {
 
         const alloc = person.allocZone == null ? '' : `${person.allocZone}${person.allocRow}`
@@ -121,14 +136,15 @@ const NameList = ({ people,
 
         // Add a Ticket header
         if (index === 0 || array[index - 1].tixType !== array[index].tixType) {
-            serial_num = 1;
-            result.push(<td colSpan="6" className="table-dark bg-primary text-center"><strong>{array[index].tixType}</strong></td>)
-        } else {
-            serial_num++;
+            result.push(<td colSpan="6"
+                className="table-dark bg-primary text-center"
+                style={{ position: 'sticky', top: '84px' }}>
+                <strong>{array[index].tixType}</strong>
+            </td>)
         }
 
         return result.concat(<tr className={trColor}>
-            <td><small>{serial_num}</small></td>
+            <td><small>{person.sn}</small></td>
             {orderCell}
             <td ref={el => allocateButtonRef.current[person.uniqueId] = el} >{highlightText(person.name, filteredText)}</td>
             <td><small>{highlightText(person.telephone, filteredText)}</small></td>
