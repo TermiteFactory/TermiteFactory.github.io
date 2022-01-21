@@ -168,6 +168,16 @@ export const createResetData = () => {
     };
 };
 
+export const NAVBAR_HEIGHT = 'NAVBAR_HEIGHT';
+export const createNavbarHeight = (height) => {
+    return {
+        type: NAVBAR_HEIGHT,
+        payload: height
+    };
+};
+
+
+
 
 // Reducers 
 const initialAppState = {
@@ -255,6 +265,7 @@ const initialAppState = {
     activatedZones: ['A', 'B'],
     loadedFile: 'test_data.csv',
     activeTickets: ['2/1 - (A+B/Grand Staircase)', '2/1-(CRYROOM/Carpark Entry)'],
+    navbarHeight: null,
 };
 
 export const appState = (state = initialAppState, action) => {
@@ -491,6 +502,13 @@ export const appState = (state = initialAppState, action) => {
                 ...initialAppState,
             };
         }
+        case NAVBAR_HEIGHT: {
+            // Update the person's checkin status to false
+            return {
+                ...state,
+                navbarHeight: payload
+            };
+        }
         default:
             return state;
     }
@@ -546,6 +564,8 @@ export const getActivatedZones = (state) => state.appState.activatedZones;
 export const getLoadedFile = (state) => state.appState.loadedFile;
 
 export const getActiveTickets = (state) => state.appState.activeTickets;
+
+export const getNavbarHeight = (state) => state.appState.navbarHeight;
 
 const fieldMapping = {
     'Order number': 'orderNum',

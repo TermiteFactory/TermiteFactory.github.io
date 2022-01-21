@@ -5,6 +5,7 @@ import {
     getOrderSelectForAlloc,
     getFilteredText,
     getFilterUnentered,
+    getNavbarHeight,
     createSelectId,
     createUnSelectId,
     createCheckIn,
@@ -37,6 +38,7 @@ const NameList = ({ people,
     filteredText,
     filterUnentered,
     activeTix,
+    navbarHeight,
     onAllocated,
     onUnallocated,
     onCheckIn,
@@ -138,7 +140,7 @@ const NameList = ({ people,
         if (index === 0 || array[index - 1].tixType !== array[index].tixType) {
             result.push(<td colSpan="6"
                 className="table-dark bg-primary text-center"
-                style={{ position: 'sticky', top: '84px' }}>
+                style={{ position: 'sticky', top: `${navbarHeight}px` }}>
                 <strong>{array[index].tixType}</strong>
             </td>)
         }
@@ -228,6 +230,7 @@ const mapStateToProps = state => ({
     filteredText: getFilteredText(state),
     filterUnentered: getFilterUnentered(state),
     activeTix: getActiveTickets(state),
+    navbarHeight: getNavbarHeight(state)
 });
 
 const mapDispatchToProps = dispatch => ({

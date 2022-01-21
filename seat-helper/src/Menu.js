@@ -104,7 +104,6 @@ const Menu = ({ menu,
             tixlist.push(person.tixType);
         }
     });
-    console.log(alloctix)
 
     const [resetOk, setResetOk] = useState(false);
 

@@ -1,5 +1,6 @@
 import { Navbar, Container, Button, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import React, { useRef, useEffect } from 'react';
 import {
     getPeople,
     getZoneInfo,
@@ -12,6 +13,7 @@ import {
     getMenu,
     createMenu,
     createUnmenu,
+    createNavbarHeight,
 } from './redux';
 
 const TopBar = ({ people,
@@ -24,7 +26,8 @@ const TopBar = ({ people,
     onFilterUnEntered,
     onUnfilterUnentered,
     onMenu,
-    onUnmenu }) => {
+    onUnmenu,
+    onSetNavbarHeight, }) => {
 
     const allocstats = people.reduce((result, person) => {
         if (person.allocZone === null && !person.absent) {
@@ -52,7 +55,12 @@ const TopBar = ({ people,
         }, '');
     }
 
-    return <Navbar bg="dark" variant="dark" sticky="top">
+    const navRef = useRef(null);
+    useEffect(() => {
+        onSetNavbarHeight(navRef.current.offsetHeight - 1)
+    }, [])
+
+    return <Navbar ref={navRef} bg="dark" variant="dark" sticky="top">
         <Container>
             <Navbar.Brand>Seat Helper</Navbar.Brand>
             <div className="input-group">
@@ -106,6 +114,7 @@ const mapDispatchToProps = dispatch => ({
     onUnfilterUnentered: () => dispatch(createUnFilterOnlyUnentered()),
     onMenu: () => dispatch(createMenu()),
     onUnmenu: () => dispatch(createUnmenu()),
+    onSetNavbarHeight: (height) => dispatch(createNavbarHeight(height))
 });
 
 export default connect(
