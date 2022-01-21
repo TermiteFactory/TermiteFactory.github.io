@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/seat-helper/build/static/css/main.b0163ad6.css",
-    "main.js": "/seat-helper/build/static/js/main.a6cc1481.js",
+    "main.css": "/seat-helper/build/static/css/main.730bdd21.css",
+    "main.js": "/seat-helper/build/static/js/main.831185b2.js",
     "static/js/377.62bd2ef1.chunk.js": "/seat-helper/build/static/js/377.62bd2ef1.chunk.js",
     "service-worker.js": "/seat-helper/build/service-worker.js",
     "index.html": "/seat-helper/build/index.html",
-    "main.b0163ad6.css.map": "/seat-helper/build/static/css/main.b0163ad6.css.map",
-    "main.a6cc1481.js.map": "/seat-helper/build/static/js/main.a6cc1481.js.map",
+    "main.730bdd21.css.map": "/seat-helper/build/static/css/main.730bdd21.css.map",
+    "main.831185b2.js.map": "/seat-helper/build/static/js/main.831185b2.js.map",
     "377.62bd2ef1.chunk.js.map": "/seat-helper/build/static/js/377.62bd2ef1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b0163ad6.css",
-    "static/js/main.a6cc1481.js"
+    "static/css/main.730bdd21.css",
+    "static/js/main.831185b2.js"
   ]
 }
