@@ -139,8 +139,7 @@ const NameList = ({ people,
         // Add a Ticket header
         if (index === 0 || array[index - 1].tixType !== array[index].tixType) {
             result.push(<td colSpan="6"
-                className="table-dark bg-primary text-center"
-                style={{ position: 'sticky', top: `${navbarHeight}px` }}>
+                className="table-dark bg-primary text-center">
                 <strong>{array[index].tixType}</strong>
             </td>)
         }
