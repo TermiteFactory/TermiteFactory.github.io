@@ -99,7 +99,8 @@ const NameList = ({ people,
 
     // Filter the orders
     const filtered_people = sn_people.reduce((result, person) => {
-        if (filtered_orders.indexOf(person.orderNum) !== -1) {
+        if (filtered_orders.indexOf(person.orderNum) !== -1 &&
+            (activeTix.indexOf(person.tixType) !== -1 || person.tixType === 'On Entry')) {
             result.push(person);
         }
         return result;
@@ -123,10 +124,12 @@ const NameList = ({ people,
 
         // Invert the stripe
         let orderSpan = 0;
-        if (index === 0 || array[index - 1].orderNum !== person.orderNum) {
+        if (index === 0 || array[index - 1].orderNum !== person.orderNum || array[index - 1].tixType !== person.tixType) {
             let idx = index;
             // Find the span
-            while (array.length > idx && array[idx].orderNum === person.orderNum) {
+            while (array.length > idx
+                && array[idx].orderNum === person.orderNum
+                && array[idx].tixType === person.tixType) {
                 orderSpan++;
                 idx++;
             }

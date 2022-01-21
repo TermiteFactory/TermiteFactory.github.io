@@ -63,9 +63,11 @@ const MenuContainer = styled.div`
     color: white;
     left: 20vw;
     width: 60vw;
+    max-height: 85vh;
     padding: 10px;
     top: 100px;
     position: fixed;
+    overflow-y: scroll;
     text-align: center;
     background: rgba(150, 150, 150, 0.95);
     z-index: 99;
