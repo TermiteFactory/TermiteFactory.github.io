@@ -10,6 +10,7 @@ import {
     getFilteredText,
     getFilterUnentered,
     getActivatedZones,
+    getActiveTickets,
     getMenu,
     createMenu,
     createUnmenu,
@@ -19,6 +20,7 @@ import {
 const TopBar = ({ people,
     zoneInfo,
     activatedZones,
+    activeTix,
     filteredText,
     filterUnenetered,
     menu,
@@ -30,17 +32,21 @@ const TopBar = ({ people,
     onSetNavbarHeight, }) => {
 
     const allocstats = people.reduce((result, person) => {
-        if (person.allocZone === null && !person.absent) {
-            return {
-                ...result,
-                unalloc: result.unalloc + 1,
+        if (activeTix.indexOf(person.tixType) !== -1) {
+            if (person.allocZone === null && !person.absent) {
+                return {
+                    ...result,
+                    unalloc: result.unalloc + 1,
+                }
+            } else {
+                const prev = result[person.allocZone] == null ? 0 : result[person.allocZone]
+                return {
+                    ...result,
+                    [person.allocZone]: prev + 1,
+                }
             }
         } else {
-            const prev = result[person.allocZone] == null ? 0 : result[person.allocZone]
-            return {
-                ...result,
-                [person.allocZone]: prev + 1,
-            }
+            return result;
         }
     }, { unalloc: 0 });
 
@@ -105,6 +111,7 @@ const mapStateToProps = state => ({
     activatedZones: getActivatedZones(state),
     filteredText: getFilteredText(state),
     filterUnenetered: getFilterUnentered(state),
+    activeTix: getActiveTickets(state),
     menu: getMenu(state),
 });
 

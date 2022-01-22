@@ -110,9 +110,9 @@ const NameList = ({ people,
     // Reference ref
     const allocateButtonRef = useRef({})
     useEffect(() => {
-        if (idsSelectForAlloc.length > 0) {
+        if (idsSelectForAlloc.length > 0 && idsSelectForAlloc.indexOf('showmap') === -1) {
             const yOffset = -200; // Off set the nav bar
-            const y = allocateButtonRef.current[idsSelectForAlloc[0]].getBoundingClientRect().top + window.pageYOffset + yOffset;
+            const y = allocateButtonRef.current[idsSelectForAlloc[idsSelectForAlloc.length - 1]].getBoundingClientRect().top + window.pageYOffset + yOffset;
             window.scrollTo({ top: y, behavior: 'smooth' });
         }
     }, [idsSelectForAlloc]);
@@ -138,26 +138,46 @@ const NameList = ({ people,
         const trColor = stripe ? "table-active" : "table-light";
         const orderCell = orderSpan > 0 ? <td rowSpan={orderSpan}><div className="text-nowrap"><small>{person.orderNum}</small></div></td> : null;
         const allocated = idsSelectForAlloc.indexOf(person.uniqueId) !== -1;
+        const mapshow = idsSelectForAlloc.indexOf('showmap') !== -1;
 
         // Add a Ticket header
         if (index === 0 || array[index - 1].tixType !== array[index].tixType) {
-            result.push(<td colSpan="6"
-                className="table-dark bg-primary text-center">
+            result.push([])
+            result[result.length - 1].push(<th colSpan="6"
+                className="table-dark bg-primary text-center"
+                style={{ position: "sticky", top: `${navbarHeight}px`, zIndex: 1 }}
+            >
                 <strong>{array[index].tixType}</strong>
-            </td>)
+                <Button variant={mapshow ? "light" : "outline-light"}
+                    onClick={() => mapshow ? onUnallocated('showmap') : onAllocated('showmap', 'showmap')}
+                    disabled={idsSelectForAlloc.length > 0 && !mapshow}
+                    className="btn btn-sm float-right">
+                    View Map
+                </Button>
+            </th>)
+            result[result.length - 1].push(
+                <tr>
+                    <th>Sn</th>
+                    <th>Order</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Loc</th>
+                    <th>Actions</th>
+                </tr>
+            )
         }
 
-        return result.concat(<tr className={trColor}>
+        result[result.length - 1].push(<tr className={trColor}>
             <td><small>{person.sn}</small></td>
             {orderCell}
-            <td ref={el => allocateButtonRef.current[person.uniqueId] = el} >{highlightText(person.name, filteredText)}</td>
-            <td><small>{highlightText(person.telephone, filteredText)}</small></td>
+            <td style={{ width: '60%' }} ref={el => allocateButtonRef.current[person.uniqueId] = el} >{highlightText(person.name, filteredText)}</td>
+            <td style={{ width: '20%' }}><small>{highlightText(person.telephone, filteredText)}</small></td>
             <td>{highlightText(alloc, filteredText)}</td>
             <td>
                 <div className="text-nowrap">
                     <Button variant={allocated ? "success" : "outline-success"}
                         onClick={() => allocated ? onUnallocated(person.uniqueId) : onAllocated(person.uniqueId, person.orderNum)}
-                        disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent || person.checkin}
+                        disabled={(orderSelectForAlloc != null && orderSelectForAlloc !== person.orderNum) || person.absent || person.checkin || mapshow}
                         className='ml-1 btn-sm'>Allocate</Button>
                     <Button variant={person.checkin ? "secondary" : "outline-secondary"}
                         className='ml-1 btn-sm'
@@ -169,7 +189,8 @@ const NameList = ({ people,
                         className='ml-1 btn-sm'>Absent</Button>
                 </div>
             </td>
-        </tr>)
+        </tr>);
+        return result;
     }, []);
 
     const nameInputRef = useRef(null);
@@ -192,7 +213,7 @@ const NameList = ({ people,
     }
 
     // Add New Entries
-    rows.push(<tr>
+    rows[rows.length - 1].push(<tr>
         <td><div className="text-nowrap"><small></small></div></td>
         <td><div className="text-nowrap"><small>ENTRY-ORDER</small></div></td>
         <td><FormControl type="text" placeholder='Name' className='col-sm-14'
@@ -208,21 +229,15 @@ const NameList = ({ people,
             className='ml-1 btn-sm text-nowrap'>Add Person</Button></td>
     </tr>)
 
-    return <Table>
-        <thead>
-            <tr>
-                <th>Sn</th>
-                <th>Order</th>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Loc</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {rows}
-        </tbody>
-    </Table>;
+    return <>
+        {rows.map((table, idx) => {
+            return <Table>
+                <tbody>
+                    {table}
+                </tbody>
+            </Table>;
+        })}
+    </>;
 }
 
 const mapStateToProps = state => ({

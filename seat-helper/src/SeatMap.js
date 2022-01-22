@@ -75,6 +75,7 @@ const Footer = styled.div`
     padding: 10px;
     padding-left: 10vw;
     box-shadow: 0px 0px 30px 1px #888888;
+    z-index: 2;
 `
 
 const SeatMap = ({ people,
@@ -87,6 +88,9 @@ const SeatMap = ({ people,
     onChooseSeat,
     onDoneAlloc }) => {
     if (idSelectForAlloc.length > 0) {
+
+        // Check if this is just a map showing
+        const showmap = idSelectForAlloc.indexOf("showmap") !== -1;
 
         // Tabs
         const tabs = zoneInfo.reduce((result, zone) => {
@@ -122,8 +126,10 @@ const SeatMap = ({ people,
 
                 let rowSelected = selectZone === zone.id && (selectRow - 1) === i
                 let row = [<RowButtonContainer><Button className="btn-sm"
-                    variant={rowSelected ? "success" : "outline-success"}
-                    onClick={() => rowSelected ? onChooseSeat(null, null) : onChooseSeat(zone.id, i + 1)}>Row {i + 1}</Button></RowButtonContainer>]
+                    variant={showmap ? "success" : rowSelected ? "success" : "outline-success"}
+                    disabled={showmap}
+                    onClick={() => rowSelected ? onChooseSeat(null, null) : onChooseSeat(zone.id, i + 1)}>Row {i + 1}
+                </Button></RowButtonContainer>]
 
 
                 // Render Taken 
@@ -179,6 +185,12 @@ const SeatMap = ({ people,
 
         const firstZone = zoneInfo.find(zone => zone.id === activatedZones[0]);
         const defaultZone = lastSelectZone == null ? firstZone.id : lastSelectZone
+
+        const confirmButton = <ConfirmButton onClick={() => onDoneAlloc()}
+            variant={overallocation ? "danger " : "primary"}>
+            {selectionMade ? overallocation ? 'Confirm OverAllocated Row' : 'Confirm New Selection' : 'Exit and Erase Previous Allocation'}
+        </ConfirmButton>
+
         return <Footer>
             <Tab.Container id="left-tabs-example" defaultActiveKey={defaultZone}>
                 <Row>
@@ -194,10 +206,7 @@ const SeatMap = ({ people,
                     </Col>
                 </Row>
             </Tab.Container>
-            <ConfirmButton onClick={() => onDoneAlloc()}
-                variant={overallocation ? "danger " : "primary"}>
-                {selectionMade ? overallocation ? 'Confirm OverAllocated Row' : 'Confirm New Selection' : 'Exit and Erase Previous Allocation'}
-            </ConfirmButton>
+            {showmap ? null : confirmButton}
         </Footer>
     } else {
         return <></>;

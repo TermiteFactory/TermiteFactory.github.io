@@ -117,6 +117,15 @@
     opacity: 0.2;
 }
 
+.btn-outline-light:not([disabled]):not(.disabled).active,
+.btn-outline-light:not([disabled]):not(.disabled):active,
+.btn-outline-light:not([disabled]):not(.disabled).hover,
+.btn-outline-light:not([disabled]):not(.disabled):hover{
+    color: #f8f9fa !important;
+    background-color: transparent !important;
+    border-color: #f8f9fa !important;
+}
+
 
 .btn-light:not([disabled]):not(.disabled).active,
 .btn-light:not([disabled]):not(.disabled):active,
