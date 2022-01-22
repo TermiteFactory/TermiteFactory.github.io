@@ -106,6 +106,8 @@ const Menu = ({ menu,
             tixlist.push(person.tixType);
         }
     });
+    // Sort the ticket list to be consistent
+    tixlist.sort()
 
     const [resetOk, setResetOk] = useState(false);
 
