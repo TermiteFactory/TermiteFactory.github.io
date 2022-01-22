@@ -213,6 +213,9 @@ const NameList = ({ people,
     }
 
     // Add New Entries
+    if (rows.length === 0) {
+        rows.push([]);
+    }
     rows[rows.length - 1].push(<tr>
         <td><div className="text-nowrap"><small></small></div></td>
         <td><div className="text-nowrap"><small>ENTRY-ORDER</small></div></td>
