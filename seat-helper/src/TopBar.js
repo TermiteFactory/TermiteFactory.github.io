@@ -32,7 +32,7 @@ const TopBar = ({ people,
     onSetNavbarHeight, }) => {
 
     const allocstats = people.reduce((result, person) => {
-        if (activeTix.indexOf(person.tixType) !== -1 || person.tixType === 'On Entry') {
+        if ((activeTix.indexOf(person.tixType) !== -1 && person.tixType.indexOf("*") === -1) || person.tixType === 'On Entry') {
             if (person.allocZone === null && !person.absent) {
                 return {
                     ...result,
