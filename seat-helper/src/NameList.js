@@ -17,6 +17,9 @@ import {
 } from './redux';
 import { Table, Button, FormControl } from 'react-bootstrap';
 import React, { useRef, useEffect, useState } from 'react'
+import smoothscroll from 'smoothscroll-polyfill';
+
+smoothscroll.polyfill();
 
 function highlightText(text, searchstr) {
     if (searchstr == null || searchstr === '') {
