@@ -61,10 +61,17 @@ const TopBar = ({ people,
         }, '');
     }
 
+    // Update the bar width
     const navRef = useRef(null);
+    const handleNavChangeHeight = () => {
+        if (navRef != null) {
+            onSetNavbarHeight(navRef.current.offsetHeight - 1);
+        }
+    }
     useEffect(() => {
-        onSetNavbarHeight(navRef.current.offsetHeight - 1)
+        handleNavChangeHeight();
     }, [])
+    window.addEventListener('resize', handleNavChangeHeight);
 
     return <Navbar ref={navRef} bg="dark" variant="dark" sticky="top">
         <Container>

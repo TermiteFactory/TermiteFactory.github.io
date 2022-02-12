@@ -111,9 +111,11 @@ const NameList = ({ people,
     const allocateButtonRef = useRef({})
     useEffect(() => {
         if (idsSelectForAlloc.length > 0 && idsSelectForAlloc.indexOf('showmap') === -1) {
-            const yOffset = -200; // Off set the nav bar
-            const y = allocateButtonRef.current[idsSelectForAlloc[idsSelectForAlloc.length - 1]].getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
+            const item = allocateButtonRef.current[idsSelectForAlloc[idsSelectForAlloc.length - 1]].getBoundingClientRect();
+            if (item.bottom > (window.innerHeight - 520)) {
+                const y = item.bottom - (window.innerHeight - 520) + window.pageYOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
         }
     }, [idsSelectForAlloc]);
 
@@ -233,7 +235,7 @@ const NameList = ({ people,
             className='ml-1 btn-sm text-nowrap'>Add Person</Button></td>
     </tr>)
 
-    return <>
+    return <div style={{ marginBottom: idsSelectForAlloc.length > 0 ? 520 : 0 }}>
         {rows.map((table, idx) => {
             return <Table>
                 <tbody>
@@ -241,7 +243,7 @@ const NameList = ({ people,
                 </tbody>
             </Table>;
         })}
-    </>;
+    </div>;
 }
 
 const mapStateToProps = state => ({

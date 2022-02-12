@@ -122,15 +122,15 @@ const Menu = ({ menu,
             style: {
                 backgroundColor: 'rgba(200, 200, 200, 0.95)',
                 borderRadius: '10px',
-                padding: '20px'
+                padding: '0px 20px 20px 20px',
             },
         }}
         sx={{ textAlign: 'center', fontSize: '16px' }}>
-        <DialogTitle disableTypography>
+        <DialogTitle>
             <IconButton onClick={() => onUnmenu()} sx={{ float: 'right' }}>
                 <CloseIcon />
             </IconButton>
-            <h2>Options and Settings</h2>
+            <h2 style={{ display: 'inline' }}>Options and Settings</h2>
         </DialogTitle>
         <FileLoader onFileSelected={onFileSelected} loadedFile={loadedFile}></FileLoader>
         <hr></hr>
