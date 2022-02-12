@@ -1,5 +1,8 @@
 import { connect } from 'react-redux';
-import { Navbar, Button, Nav, Tab, Row, Col } from 'react-bootstrap';
+import { Button, Nav, Tab, Row, Col } from 'react-bootstrap';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import styled from 'styled-components'
 import {
     getPeople,
@@ -10,6 +13,7 @@ import {
     getLastSelectZone,
     createChooseSeat,
     createDoneAlloc,
+    createUnSelectId,
     getActivatedZones,
 } from './redux';
 
@@ -64,6 +68,7 @@ const RowContainer = styled.div``
 const ConfirmButton = styled(Button)`
     position: relative;
     margin-top: 5px;
+    margin-bottom: 5px;
 `
 
 const Footer = styled.div`
@@ -86,112 +91,120 @@ const SeatMap = ({ people,
     selectRow,
     lastSelectZone,
     onChooseSeat,
-    onDoneAlloc }) => {
-    if (idSelectForAlloc.length > 0) {
+    onDoneAlloc,
+    onUnallocated, }) => {
 
-        // Check if this is just a map showing
-        const showmap = idSelectForAlloc.indexOf("showmap") !== -1;
+    // Check if this is just a map showing
+    const showmap = idSelectForAlloc.indexOf("showmap") !== -1;
 
-        // Tabs
-        const tabs = zoneInfo.reduce((result, zone) => {
-            if (activatedZones.indexOf(zone.id) === -1) {
+    // Tabs
+    const tabs = zoneInfo.reduce((result, zone) => {
+        if (activatedZones.indexOf(zone.id) === -1) {
+            return result;
+        }
+        return result.concat(<Nav.Item>
+            <Nav.Link eventKey={zone.id}>Zone {zone.id}</Nav.Link>
+        </Nav.Item>)
+    }, [])
+
+    // Rows
+    let selectionMade = false;
+    let overallocation = false;
+    const content = zoneInfo.reduce((result, zone) => {
+        if (activatedZones.indexOf(zone.id) === -1) {
+            return result;
+        }
+        const rows = []
+        for (let i = 0; i < zone.rows; i++) {
+            let takenList = people.reduce((result, person) => {
+                if (idSelectForAlloc.indexOf(person.uniqueId) === -1 &&
+                    person.allocZone === zone.id &&
+                    person.allocRow === i + 1) {
+                    if (person.orderNum in result) {
+                        result[person.orderNum]++;
+                    } else {
+                        result[person.orderNum] = 1;
+                    }
+                }
                 return result;
-            }
-            return result.concat(<Nav.Item>
-                <Nav.Link eventKey={zone.id}>Zone {zone.id}</Nav.Link>
-            </Nav.Item>)
-        }, [])
+            }, {});
 
-        // Rows
-        let selectionMade = false;
-        let overallocation = false;
-        const content = zoneInfo.reduce((result, zone) => {
-            if (activatedZones.indexOf(zone.id) === -1) {
-                return result;
-            }
-            const rows = []
-            for (let i = 0; i < zone.rows; i++) {
-                let takenList = people.reduce((result, person) => {
-                    if (idSelectForAlloc.indexOf(person.uniqueId) === -1 &&
-                        person.allocZone === zone.id &&
-                        person.allocRow === i + 1) {
-                        if (person.orderNum in result) {
-                            result[person.orderNum]++;
-                        } else {
-                            result[person.orderNum] = 1;
-                        }
+            let rowSelected = selectZone === zone.id && (selectRow - 1) === i
+            let row = [<RowButtonContainer><Button className="btn-sm"
+                variant={showmap ? "success" : rowSelected ? "success" : "outline-success"}
+                disabled={showmap}
+                onClick={() => rowSelected ? onChooseSeat(null, null) : onChooseSeat(zone.id, i + 1)}>Row {i + 1}
+            </Button></RowButtonContainer>]
+
+
+            // Render Taken 
+            let remaining = zone.seats;
+            Object.keys(takenList).forEach((key) => {
+                for (let j = 0; j < takenList[key]; j++) {
+                    if (j === 0 && j === (takenList[key] - 1)) {
+                        row.push(<Seat type='taken' right_mark='true' left_mark='true' />)
+                    } else if (j === 0) {
+                        row.push(<Seat type='taken' left_mark='true' />)
+                    } else if (j === (takenList[key] - 1)) {
+                        row.push(<Seat type='taken' right_mark='true' />)
+                    } else {
+                        row.push(<Seat type='taken' />)
                     }
-                    return result;
-                }, {});
+                    remaining--;
+                }
+            });
 
-                let rowSelected = selectZone === zone.id && (selectRow - 1) === i
-                let row = [<RowButtonContainer><Button className="btn-sm"
-                    variant={showmap ? "success" : rowSelected ? "success" : "outline-success"}
-                    disabled={showmap}
-                    onClick={() => rowSelected ? onChooseSeat(null, null) : onChooseSeat(zone.id, i + 1)}>Row {i + 1}
-                </Button></RowButtonContainer>]
-
-
-                // Render Taken 
-                let remaining = zone.seats;
-                Object.keys(takenList).forEach((key) => {
-                    for (let j = 0; j < takenList[key]; j++) {
-                        if (j === 0 && j === (takenList[key] - 1)) {
-                            row.push(<Seat type='taken' right_mark='true' left_mark='true' />)
-                        } else if (j === 0) {
-                            row.push(<Seat type='taken' left_mark='true' />)
-                        } else if (j === (takenList[key] - 1)) {
-                            row.push(<Seat type='taken' right_mark='true' />)
-                        } else {
-                            row.push(<Seat type='taken' />)
-                        }
-                        remaining--;
+            // Render Chosen
+            if (rowSelected) {
+                selectionMade = true;
+                for (let j = 0; j < idSelectForAlloc.length; j++) {
+                    if (j === 0 && j === (idSelectForAlloc.length - 1)) {
+                        row.push(<Seat type='chosen' right_mark='true' left_mark='true' />)
+                    } else if (j === 0) {
+                        row.push(<Seat type='chosen' left_mark='true' />)
+                    } else if (j === (idSelectForAlloc.length - 1)) {
+                        row.push(<Seat type='chosen' right_mark='true' />)
+                    } else {
+                        row.push(<Seat type='chosen' />)
                     }
-                });
-
-                // Render Chosen
-                if (rowSelected) {
-                    selectionMade = true;
-                    for (let j = 0; j < idSelectForAlloc.length; j++) {
-                        if (j === 0 && j === (idSelectForAlloc.length - 1)) {
-                            row.push(<Seat type='chosen' right_mark='true' left_mark='true' />)
-                        } else if (j === 0) {
-                            row.push(<Seat type='chosen' left_mark='true' />)
-                        } else if (j === (idSelectForAlloc.length - 1)) {
-                            row.push(<Seat type='chosen' right_mark='true' />)
-                        } else {
-                            row.push(<Seat type='chosen' />)
-                        }
-                        remaining--;
-                    }
+                    remaining--;
                 }
-
-                if (selectionMade && remaining < 0) {
-                    overallocation = true;
-                }
-
-                // Render Free
-                for (let j = 0; j < remaining; j++) {
-                    // Seat can be free, taken, choosen
-                    row.push(<Seat type='free' />)
-                }
-
-                rows.push(<RowContainer>{row}</RowContainer>);
             }
-            return result.concat(<Tab.Pane eventKey={zone.id}>
-                {rows}
-            </Tab.Pane>)
-        }, [])
 
-        const firstZone = zoneInfo.find(zone => zone.id === activatedZones[0]);
-        const defaultZone = lastSelectZone == null ? firstZone.id : lastSelectZone
+            if (selectionMade && remaining < 0) {
+                overallocation = true;
+            }
 
-        const confirmButton = <ConfirmButton onClick={() => onDoneAlloc()}
-            variant={overallocation ? "danger " : "primary"}>
-            {selectionMade ? overallocation ? 'Confirm OverAllocated Row' : 'Confirm New Selection' : 'Exit and Erase Previous Allocation'}
-        </ConfirmButton>
+            // Render Free
+            for (let j = 0; j < remaining; j++) {
+                // Seat can be free, taken, choosen
+                row.push(<Seat type='free' />)
+            }
 
-        return <Footer>
+            rows.push(<RowContainer>{row}</RowContainer>);
+        }
+        return result.concat(<Tab.Pane eventKey={zone.id}>
+            {rows}
+        </Tab.Pane>)
+    }, [])
+
+    const firstZone = zoneInfo.find(zone => zone.id === activatedZones[0]);
+    const defaultZone = lastSelectZone == null ? firstZone.id : lastSelectZone
+
+    const confirmButton = <ConfirmButton onClick={() => onDoneAlloc()}
+        variant={selectionMade ? overallocation ? "danger " : "primary" : "warning"}>
+        {selectionMade ? overallocation ? 'Confirm OverAllocated Row' : 'Confirm New Selection' : 'Clear Previous Allocation'}
+    </ConfirmButton>
+
+    return <Drawer
+        anchor='bottom' open={idSelectForAlloc.length > 0}
+        variant={showmap ? "temporary" : "persistent"}
+        onClose={showmap ? () => onUnallocated('showmap') : null}>
+        <div style={{ marginTop: 10, marginLeft: '10vw' }}>
+            <IconButton sx={{ float: 'right', marginRight: '20px' }}
+                onClick={() => idSelectForAlloc.forEach((value) => onUnallocated(value))}>
+                <CloseIcon />
+            </IconButton>
             <Tab.Container id="left-tabs-example" defaultActiveKey={defaultZone}>
                 <Row>
                     <Col sm={3}>
@@ -199,18 +212,16 @@ const SeatMap = ({ people,
                             {tabs}
                         </Nav>
                     </Col>
-                    <Col sm={9}>
+                    <Col sm={8}>
                         <Tab.Content>
                             {content}
                         </Tab.Content>
                     </Col>
                 </Row>
             </Tab.Container>
-            {showmap ? null : confirmButton}
-        </Footer>
-    } else {
-        return <></>;
-    }
+        </div>
+        {showmap ? null : confirmButton}
+    </Drawer>
 };
 
 const mapStateToProps = state => ({
@@ -226,6 +237,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onChooseSeat: (zone, row) => dispatch(createChooseSeat(zone, row)),
     onDoneAlloc: () => dispatch(createDoneAlloc()),
+    onUnallocated: (id, orderNum) => dispatch(createUnSelectId(id, orderNum)),
 });
 
 export default connect(

@@ -1,5 +1,9 @@
 import { connect } from 'react-redux';
 import React, { useRef, useState } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { Button, FormControl } from 'react-bootstrap';
 import {
     getMenu,
@@ -15,6 +19,7 @@ import {
     createRemoveActiveTickets,
     createAddActiveTickets,
     createResetData,
+    createUnmenu,
 } from './redux';
 import styled from 'styled-components'
 
@@ -57,22 +62,6 @@ const FileLoader = ({ loadedFile, onFileSelected }) => {
     );
 };
 
-const MenuContainer = styled.div`
-    border-radius: 10px;
-    font-size: 16px;
-    color: white;
-    left: 20vw;
-    width: 60vw;
-    max-height: 85vh;
-    padding: 10px;
-    top: 100px;
-    position: fixed;
-    overflow-y: scroll;
-    text-align: center;
-    background: rgba(150, 150, 150, 0.95);
-    z-index: 99;
-`
-
 const ZoneSelect = styled.div`
     padding: 10px;
 `
@@ -90,6 +79,7 @@ const Menu = ({ menu,
     onRemoveTix,
     onAddTix,
     onResetData,
+    onUnmenu,
 }) => {
 
     const alloczones = []
@@ -111,54 +101,63 @@ const Menu = ({ menu,
 
     const [resetOk, setResetOk] = useState(false);
 
-    if (menu) {
-        const tixbuttons = tixlist.map(ticket => {
-            const activated = activatedTix.indexOf(ticket) !== -1;
-            const occupied = alloctix.indexOf(ticket) !== -1;
-            return <div className="mt-1"><Button variant={activated ? occupied ? "secondary" : "primary" : "outline-primary"}
-                onClick={() => activated ? occupied ? () => { } : onRemoveTix(ticket) : onAddTix(ticket)}
-                className="ml-1">{ticket}</Button></div>
-        })
+    const tixbuttons = tixlist.map(ticket => {
+        const activated = activatedTix.indexOf(ticket) !== -1;
+        const occupied = alloctix.indexOf(ticket) !== -1;
+        return <div className="mt-1"><Button variant={activated ? occupied ? "secondary" : "primary" : "outline-primary"}
+            onClick={() => activated ? occupied ? () => { } : onRemoveTix(ticket) : onAddTix(ticket)}
+            className="ml-1">{ticket}</Button></div>
+    })
 
-        const zonesbuttons = zoneInfo.map(zone => {
-            const activated = activatedZones.indexOf(zone.id) !== -1;
-            const occupied = alloczones.indexOf(zone.id) !== -1;
-            return <Button variant={activated ? occupied ? "secondary" : "primary" : "outline-primary"}
-                onClick={() => activated ? occupied ? () => { } : onRemoveZone(zone.id) : onAddZone(zone.id)}
-                className="ml-1">{zone.id}</Button>
-        })
+    const zonesbuttons = zoneInfo.map(zone => {
+        const activated = activatedZones.indexOf(zone.id) !== -1;
+        const occupied = alloczones.indexOf(zone.id) !== -1;
+        return <Button variant={activated ? occupied ? "secondary" : "primary" : "outline-primary"}
+            onClick={() => activated ? occupied ? () => { } : onRemoveZone(zone.id) : onAddZone(zone.id)}
+            className="ml-1">{zone.id}</Button>
+    })
 
-        return <MenuContainer>
+    return <Dialog open={menu} onClose={() => onUnmenu()}
+        PaperProps={{
+            style: {
+                backgroundColor: 'rgba(200, 200, 200, 0.95)',
+                borderRadius: '10px',
+                padding: '20px'
+            },
+        }}
+        sx={{ textAlign: 'center', fontSize: '16px' }}>
+        <DialogTitle disableTypography>
+            <IconButton onClick={() => onUnmenu()} sx={{ float: 'right' }}>
+                <CloseIcon />
+            </IconButton>
             <h2>Options and Settings</h2>
-            <FileLoader onFileSelected={onFileSelected} loadedFile={loadedFile}></FileLoader>
-            <hr></hr>
-            <ZoneSelect>
-                Select Active Tickets
-                {tixbuttons}
-            </ZoneSelect>
-            <hr></hr>
-            <ZoneSelect>
-                Select Active Zones
-                {zonesbuttons}
-            </ZoneSelect>
-            <hr></hr>
-            <Button variant="info" className="mt-1"
-                onClick={() =>
-                    onDownloadFile(`${loadedFile.replace(/\.[^/.]+$/, "")}_${Date.now()}_report.csv`)}>
-                Download Report
-            </Button>
-            <hr></hr>
-            <FormControl type='text' placeholder="Type 'RESET' here"
-                onChange={(e) => e.target.value === 'RESET' ? setResetOk(true) : setResetOk(false)}></FormControl>
-            <Button variant="info" className="mt-1"
-                disabled={!resetOk}
-                onClick={() => resetOk ? onResetData() && setResetOk(false) : () => { }}>
-                Reset To Test data
-            </Button>
-        </MenuContainer>
-    } else {
-        return null;
-    }
+        </DialogTitle>
+        <FileLoader onFileSelected={onFileSelected} loadedFile={loadedFile}></FileLoader>
+        <hr></hr>
+        <ZoneSelect>
+            Select Active Tickets
+            {tixbuttons}
+        </ZoneSelect>
+        <hr></hr>
+        <ZoneSelect>
+            Select Active Zones
+            {zonesbuttons}
+        </ZoneSelect>
+        <hr></hr>
+        <Button variant="info" className="mt-1"
+            onClick={() =>
+                onDownloadFile(`${loadedFile.replace(/\.[^/.]+$/, "")}_${Date.now()}_report.csv`)}>
+            Download Report
+        </Button>
+        <hr></hr>
+        <FormControl type='text' placeholder="Type 'RESET' here"
+            onChange={(e) => e.target.value === 'RESET' ? setResetOk(true) : setResetOk(false)}></FormControl>
+        <Button variant="info" className="mt-1"
+            disabled={!resetOk}
+            onClick={() => resetOk ? onResetData() && setResetOk(false) : () => { }}>
+            Reset To Test data
+        </Button>
+    </Dialog >
 };
 
 const mapStateToProps = state => ({
@@ -178,6 +177,7 @@ const mapDispatchToProps = dispatch => ({
     onRemoveTix: (ticket) => dispatch(createRemoveActiveTickets(ticket)),
     onAddTix: (ticket) => dispatch(createAddActiveTickets(ticket)),
     onResetData: () => dispatch(createResetData()),
+    onUnmenu: () => dispatch(createUnmenu()),
 });
 
 export default connect(
