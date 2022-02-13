@@ -3,6 +3,7 @@ import { Button, Nav, Tab, Row, Col } from 'react-bootstrap';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Grid from '@mui/material/Grid';
 import styled from 'styled-components'
 import {
     getPeople,
@@ -177,6 +178,9 @@ const SeatMap = ({ people,
                 rows.push(<RowContainer>{row}</RowContainer>);
             }
             return result.concat(<Tab.Pane eventKey={zone.id}>
+                <div style={{ paddingLeft: '190px' }}>
+                    Zone {zone.id}
+                </div>
                 {rows}
             </Tab.Pane>)
         }, [])
@@ -191,7 +195,7 @@ const SeatMap = ({ people,
 
         drawer_content = <>
             <div style={{ marginTop: 10, marginLeft: '10vw' }}>
-                <IconButton sx={{ float: 'right', marginRight: '20px' }}
+                <IconButton sx={{ marginRight: '20px', float: 'right' }}
                     onClick={() => idSelectForAlloc.forEach((value) => onUnallocated(value))}>
                     <CloseIcon />
                 </IconButton>
@@ -209,8 +213,9 @@ const SeatMap = ({ people,
                         </Col>
                     </Row>
                 </Tab.Container>
+
             </div>
-            {showmap ? null : confirmButton}</>
+            {showmap ? <div style={{ textAlign: 'center', color: 'red' }}>View-Only Seat Map</div> : confirmButton}</>
     }
 
 
@@ -220,8 +225,10 @@ const SeatMap = ({ people,
         onClose={showmap ? () => onUnallocated('showmap') : null}
         sx={{
             '& .MuiDrawer-paper': {
-                height: 520,
+                height: 550,
                 boxSizing: 'border-box',
+                background: "#F5F5F5",
+                borderColor: 'grey'
             },
         }}
     >

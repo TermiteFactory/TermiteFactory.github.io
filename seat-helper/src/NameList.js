@@ -113,10 +113,11 @@ const NameList = ({ people,
     // Reference ref
     const allocateButtonRef = useRef({})
     useEffect(() => {
+        const mapHeight = 550
         if (idsSelectForAlloc.length > 0 && idsSelectForAlloc.indexOf('showmap') === -1) {
             const item = allocateButtonRef.current[idsSelectForAlloc[idsSelectForAlloc.length - 1]].getBoundingClientRect();
-            if (item.bottom > (window.innerHeight - 520)) {
-                const y = item.bottom - (window.innerHeight - 520) + window.pageYOffset;
+            if (item.bottom > (window.innerHeight - mapHeight)) {
+                const y = item.bottom - (window.innerHeight - mapHeight) + window.pageYOffset;
                 window.scrollTo({ top: y, behavior: 'smooth' });
             }
         }
