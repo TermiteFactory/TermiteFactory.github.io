@@ -18,12 +18,26 @@ import {
     getActivatedZones,
 } from './redux';
 
+const Separator = styled.div`
+    height: 30px;
+    width: 2px;
+    background-color: red;
+    display: inline-block;
+    margin-left: -1px;
+    margin-right: -1px;
+`
+
 const Seat = styled.div`
     height: 30px;
     width: 30px;
-    ${({ type }) => {
+    ${({ type, striped }) => {
         if (type === 'taken') {
-            return 'background-color: grey;'
+            if (striped === 'true') {
+                return 'background-image: linear-gradient(45deg, #bebdbf 10%, #808080 10%, #808080 50%, #bebdbf 50%, #bebdbf 60%, #808080 60%, #808080 100%); background-size: 7.07px 7.07px;'
+            } else {
+                return 'background-color: grey;'
+            }
+
         }
         else if (type === 'chosen') {
             return 'background-color: orange;'
@@ -114,11 +128,21 @@ const SeatMap = ({ people,
                     if (idSelectForAlloc.indexOf(person.uniqueId) === -1 &&
                         person.allocZone === zone.id &&
                         person.allocRow === i + 1) {
-                        if (person.orderNum in result) {
-                            result[person.orderNum]++;
+
+                        if (person.checkin === true) {
+                            if (person.orderNum in result) {
+                                result[person.orderNum][0]++;
+                            } else {
+                                result[person.orderNum] = [1, 0];
+                            }
                         } else {
-                            result[person.orderNum] = 1;
+                            if (person.orderNum in result) {
+                                result[person.orderNum][1]++;
+                            } else {
+                                result[person.orderNum] = [0, 1];
+                            }
                         }
+
                     }
                     return result;
                 }, {});
@@ -134,15 +158,39 @@ const SeatMap = ({ people,
                 // Render Taken 
                 let remaining = zone.seats;
                 Object.keys(takenList).forEach((key) => {
-                    for (let j = 0; j < takenList[key]; j++) {
-                        if (j === 0 && j === (takenList[key] - 1)) {
+                    for (let j = 0; j < takenList[key][0]; j++) {
+                        if (j === 0 && j === (takenList[key][0] - 1) && takenList[key][1] === 0) {
+                            if (row.length > 1) {
+                                row.push(<Separator></Separator>)
+                            } 
                             row.push(<Seat type='taken' right_mark='true' left_mark='true' />)
                         } else if (j === 0) {
+                            if (row.length > 1) {
+                                row.push(<Separator></Separator>)
+                            }
                             row.push(<Seat type='taken' left_mark='true' />)
-                        } else if (j === (takenList[key] - 1)) {
+                        } else if (j === (takenList[key][0] - 1) && takenList[key][1] === 0) {
                             row.push(<Seat type='taken' right_mark='true' />)
                         } else {
                             row.push(<Seat type='taken' />)
+                        }
+                        remaining--;
+                    }
+                    for (let j = 0; j < takenList[key][1]; j++) {
+                        if (j === 0 && j === (takenList[key][1] - 1) && takenList[key][0] === 0) {
+                            if (row.length > 1) {
+                                row.push(<Separator></Separator>)
+                            }
+                            row.push(<Seat type='taken' right_mark='true' left_mark='true' striped='true' />)
+                        } else if (j === 0 && takenList[key][0] === 0) {
+                            if (row.length > 1) {
+                                row.push(<Separator></Separator>)
+                            }
+                            row.push(<Seat type='taken' left_mark='true' striped='true' />)
+                        } else if (j === (takenList[key][1] - 1)) {
+                            row.push(<Seat type='taken' right_mark='true' striped='true' />)
+                        } else {
+                            row.push(<Seat type='taken' striped='true' />)
                         }
                         remaining--;
                     }
@@ -153,8 +201,14 @@ const SeatMap = ({ people,
                     selectionMade = true;
                     for (let j = 0; j < idSelectForAlloc.length; j++) {
                         if (j === 0 && j === (idSelectForAlloc.length - 1)) {
+                            if (row.length > 1) {
+                                row.push(<Separator></Separator>)
+                            }
                             row.push(<Seat type='chosen' right_mark='true' left_mark='true' />)
                         } else if (j === 0) {
+                            if (row.length > 1) {
+                                row.push(<Separator></Separator>)
+                            }
                             row.push(<Seat type='chosen' left_mark='true' />)
                         } else if (j === (idSelectForAlloc.length - 1)) {
                             row.push(<Seat type='chosen' right_mark='true' />)
